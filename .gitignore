@@ -19,5 +19,6 @@ docs_build
 venv
 docs.zip
 archive.zip
+.env
 
 api_venv/
