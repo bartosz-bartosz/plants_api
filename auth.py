@@ -8,6 +8,7 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 
 import models
+from db import get_db
 
 from dotenv import load_dotenv
 
@@ -54,7 +55,7 @@ async def get_current_user(db: Session = Depends(get_db),
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"}
+        headers={"WWW-Authenticate": "Bearer"})
     try:
         payload = jwt.decode(token, SECRET_KEY, ALGORITHM)
         username: str = payload.get("sub")
