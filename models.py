@@ -9,5 +9,5 @@ class ApiUser(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String, unique=True, index=True)
-    hash_pw = Column(String, nullable=False)
+    hashed_password = Column(String, nullable=False)
     auth_level = Column(Integer)
