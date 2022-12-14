@@ -57,10 +57,9 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
 
 async def get_current_user(db: Session = Depends(get_db),
                            token: str = Depends(oauth2_scheme)):
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"})
+    credentials_exception = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+                                          detail="Could not validate credentials",
+                                          headers={"WWW-Authenticate": "Bearer"})
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get("sub")
@@ -68,7 +67,7 @@ async def get_current_user(db: Session = Depends(get_db),
         if username is None:
             raise credentials_exception
 
-    except JWTError:
+    except JWTError:  
         raise credentials_exception
 
     user = db.query(models.ApiUser).filter(models.ApiUser.username == username).first()
@@ -76,10 +75,4 @@ async def get_current_user(db: Session = Depends(get_db),
         raise credentials_exception
 
     user_dict = user.__dict__
-    return user_dict
-
-
-# async def get_current_active_user(current_user: models.ApiUser = Depends(get_current_user)):
-#     if current_user.disabled:
-#         raise HTTPException(status_code=400, detail="Inactive user")
-#     return current_user
+    return user
