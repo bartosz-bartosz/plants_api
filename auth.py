@@ -32,10 +32,7 @@ def get_password_hash(password):
 
 
 def authenticate_user(db, username: str, password: str):
-    print(username)
     user = db.query(models.ApiUser).filter(models.ApiUser.username == username).first()
-    print(user.hashed_password)
-    print(password)
     if not user:
         return False
     if not verify_password(password, user.hashed_password):
