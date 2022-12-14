@@ -1,3 +1,4 @@
+from typing import Union
 from pydantic import BaseModel
 
 
@@ -7,16 +8,16 @@ class Token(BaseModel):
 
 
 class TokenData(BaseModel):
-    username: str | None = None
+    username: Union[str, None] = None
 
 
 class ApiUser(BaseModel):
-    username: str | None = None
-    auth_level: int | None = None
+    username: Union[str, None] = None
+    auth_level: Union[str, None] = None
 
 
 class ApiUserSignup(ApiUser):
-    password: str | None = None
+    password: Union[str, None] = None
     
     
 # PLANTS
