@@ -5,7 +5,7 @@ from fastapi.security import OAuth2AuthorizationCodeBearer, OAuth2PasswordReques
 
 from sqlalchemy.orm import Session
 
-from routers import plants
+from plants import routers
 from auth import get_current_user, create_access_token, authenticate_user, get_password_hash
 from db import get_db
 import schemas as sc
@@ -13,7 +13,7 @@ import models as m
 
 app = FastAPI()
 
-app.include_router(plants.router)
+app.include_router(routers.router)
 
 
 @app.get("/")
