@@ -15,12 +15,21 @@ router = APIRouter(
 )
 
 
+@router.post('/create-plant')
+async def create_plant(form_data: sc.PlantCreation,
+                       db: Session = Depends(get_db),
+                       current_api_user: sc.ApiUser = Depends(get_current_user)):
+    
+    if current_api_user.auth_level >= 1:
+        
+    
+
 @router.post("/add_log")
 async def add_plant_log(form_data: sc.PlantLog,
                         db: Session = Depends(get_db),
                         current_api_user: sc.ApiUser = Depends(get_current_user)):
 
-    if current_api_user.auth_level == 1:
+    if current_api_user.auth_level >= 1:
         timestamp = datetime.fromtimestamp(form_data.timestamp)
         plant_log = m.PlantLogs(timestamp=timestamp,
                                 plant_name=form_data.plant_name,
