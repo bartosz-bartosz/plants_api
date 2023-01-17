@@ -21,3 +21,15 @@ class PlantLogs(Base):
     timestamp = Column(DATETIME)
     plant_name = Column(String, nullable=False)
     moisture = Column(Float, nullable=False)
+    
+    
+class Plants(Base):
+    __tablename__ = "plants"
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, nullable=False)
+    acquire_time = Column(DATETIME)
+    is_alive = Column(Integer)
+    species = Column(String, nullable=False)
+    watering_frequency = Column(Integer)
+    last_watering = Column(DATETIME)
+        
