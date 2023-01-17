@@ -1,7 +1,7 @@
 from datetime import timedelta
 
 from fastapi import Depends, FastAPI, HTTPException, status
-from fastapi.security import OAuth2AuthorizationCodeBearer, OAuth2PasswordRequestForm
+from fastapi.security import OAuth2AuthorizationCodeBearer, OAuth2PasswordRequestForm, OAuth2PasswordBearer
 
 from sqlalchemy.orm import Session
 
@@ -39,6 +39,10 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
     )
     
     return {"access_token": access_token, "token_type": "bearer"}
+
+
+# @app.post("/json-token", response_model=sc.Token)
+# async def json_for_access_token(json_data: OAuth2PasswordBearer)
 
 
 @app.get("/users/me")
