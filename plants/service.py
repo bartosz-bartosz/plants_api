@@ -10,10 +10,11 @@ from plants.models import Plant
 
 
 async def create_plant(plant: PlantCreate,
-                       db: Session = Depends(get_db),
-                       user: ApiUser = Depends(get_current_user)):
+                       user: ApiUser,
+                       db: Session):
     if user.auth_level >= 1:
         new_plant = Plant(
+            owner_id=user.id,
             name=plant.name,
             acquire_time=plant.acquire_time,
             is_alive=plant.is_alive,
@@ -21,6 +22,9 @@ async def create_plant(plant: PlantCreate,
             watering_frequency=plant.watering_frequency,
             last_watering=plant.last_watering
         )
-        db.add_all(new_plant)
+        db.add(new_plant)
         db.commit()
+
+        return new_plant
+    return None
 

@@ -9,6 +9,7 @@ class Plant(Base):
     """Basic model for plants table"""
     __tablename__ = "plants"
     id = Column(Integer, primary_key=True, index=True)
+    owner_id = Column(Integer)
     name = Column(String, nullable=False)
     acquire_time = Column(DATETIME)
     is_alive = Column(Integer)

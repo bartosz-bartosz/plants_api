@@ -12,6 +12,7 @@ class TokenData(BaseModel):
 
 
 class ApiUser(BaseModel):
+    id: Union[int, None] = None
     username: Union[str, None] = None
     auth_level: Union[int, None] = None
 

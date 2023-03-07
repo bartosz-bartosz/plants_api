@@ -7,7 +7,7 @@ from db import get_db
 from auth import get_current_user
 from schemas import ApiUser
 
-from plants import models as m
+from plants import service, models as m
 from plants.schemas import PlantCreate, PlantLogCreate
 
 router = APIRouter(
@@ -17,10 +17,11 @@ router = APIRouter(
 
 
 @router.post('', status_code=status.HTTP_201_CREATED)
-async def create_plant(form_data: PlantCreate,
-                       db: Session = Depends(get_db)):
-    if current_api_user.auth_level >= 1:
-        pass
+async def create_plant(plant_data: PlantCreate,
+                       db: Session = Depends(get_db),
+                       user: ApiUser = Depends(get_current_user)):
+    plant = await service.create_plant(plant_data, user, db)
+    return "plant created i hope"
 
 
 @router.get('/{id}')
