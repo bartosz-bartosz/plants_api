@@ -5,7 +5,7 @@ from sqlalchemy.orm import relationship
 from db import Base
 
 
-class Plants(Base):
+class Plant(Base):
     """Basic model for plants table"""
     __tablename__ = "plants"
     id = Column(Integer, primary_key=True, index=True)

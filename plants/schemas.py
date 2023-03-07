@@ -6,6 +6,7 @@ from pydantic import BaseModel, Field
 class PlantCreate(BaseModel):
     name: str
     acquire_time: Optional[datetime]
+    is_alive: Optional[int]
     species: Optional[str]
     watering_frequency: Optional[int]
     last_watering: Optional[datetime]
