@@ -11,7 +11,7 @@ class PlantCreate(BaseModel):
     last_watering: Optional[datetime]
 
 
-class PlantLog(BaseModel):
+class PlantLogCreate(BaseModel):
     timestamp: int
     plant_name: str
     moisture: float
