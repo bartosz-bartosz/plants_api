@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Mapping
 
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
@@ -8,7 +9,9 @@ from auth import get_current_user
 from schemas import ApiUser
 
 from plants import service, models as m
+from plants.dependencies import valid_plant_id
 from plants.schemas import PlantCreate, PlantLogCreate
+from plants.models import Plant
 
 router = APIRouter(
     prefix="/plants",
@@ -26,8 +29,9 @@ async def create_plant(plant_data: PlantCreate,
 
 @router.get('/{id}')
 async def read_plant(db: Session = Depends(get_db),
-                     current_api_user: ApiUser = Depends(get_current_user)):
-    pass
+                     current_api_user: ApiUser = Depends(get_current_user),
+                     plant: Mapping = Depends(valid_plant_id)):
+    return plant
 
 
 @router.put('/{id}')

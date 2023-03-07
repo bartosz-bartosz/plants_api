@@ -1,5 +1,5 @@
 from plants.constants import ErrorCode
 
 
-class ExampleError:
-    DETAIL = ErrorCode.EXAMPLE_ERROR
+class PlantNotFound:
+    DETAIL = ErrorCode.PLANT_NOT_FOUND

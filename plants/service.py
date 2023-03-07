@@ -28,3 +28,12 @@ async def create_plant(plant: PlantCreate,
         return new_plant
     return None
 
+
+async def get_by_id(plant_id: int, db: Session):
+    requested_plant = db.query(Plant).filter(Plant.id == plant_id).first()
+    return requested_plant
+
+
+async def delete_by_id(plant_id: int, db: Session):
+    deleted_item = db.query(Plant).filter(Plant.id == plant_id).delete()
+    return deleted_item
