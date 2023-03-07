@@ -13,17 +13,8 @@ class TokenData(BaseModel):
 
 class ApiUser(BaseModel):
     username: Union[str, None] = None
-    auth_level: Union[str, None] = None
+    auth_level: Union[int, None] = None
 
 
 class ApiUserSignup(ApiUser):
     password: Union[str, None] = None
-    
-    
-# PLANTS
-
-class PlantLog(BaseModel):
-    timestamp: int
-    plant_name: str
-    moisture: float
-
