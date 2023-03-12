@@ -1,6 +1,5 @@
-from sqlalchemy import Boolean, Column, Integer, String, ForeignKey, Enum, Text, Float
-from sqlalchemy.dialects.mysql import DATETIME
-from sqlalchemy.orm import relationship
+from sqlalchemy import Boolean, Column, Integer, String, ForeignKey, Enum, Text, Float, DateTime
+from sqlalchemy.orm import Mapped, relationship, mapped_column
 
 from db import Base
 
@@ -8,14 +7,14 @@ from db import Base
 class Plant(Base):
     """Basic model for plants table"""
     __tablename__ = "plants"
-    id = Column(Integer, primary_key=True, index=True)
-    owner_id = Column(Integer)
-    name = Column(String, nullable=False)
-    acquire_time = Column(DATETIME)
-    is_alive = Column(Integer)
-    species = Column(String, nullable=False)
-    watering_frequency = Column(Integer)
-    last_watering = Column(DATETIME)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    owner_id: Mapped[int] = mapped_column(Integer)
+    name: Mapped[str] = mapped_column(String, nullable=False)
+    acquire_time= mapped_column(DateTime)
+    is_alive: Mapped[bool] = mapped_column(Integer)
+    species: Mapped[str] = mapped_column(String, nullable=False)
+    watering_frequency: Mapped[int] = mapped_column(Integer)
+    last_watering = mapped_column(DateTime)
 
 
 class Watering(Base):
@@ -26,8 +25,8 @@ class PlantLogs(Base):
     """Table for storing plant logs from a microcontroller in the future"""
     __tablename__ = "plant_logs"
 
-    id = Column(Integer, primary_key=True, index=True)
-    timestamp = Column(DATETIME)
-    plant_name = Column(String, nullable=False)
-    moisture = Column(Float, nullable=False)
+    id = mapped_column(Integer, primary_key=True, index=True)
+    timestamp = mapped_column(DateTime)
+    plant_name = mapped_column(String, nullable=False)
+    moisture = mapped_column(Float, nullable=False)
     
