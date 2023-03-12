@@ -6,13 +6,20 @@ from pydantic import BaseModel, Field
 class PlantCreate(BaseModel):
     name: str
     acquire_time: Optional[datetime]
-    is_alive: Optional[int]
+    is_alive: Optional[int] = 1
     species: Optional[str]
     watering_frequency: Optional[int]
     last_watering: Optional[datetime]
+
+
+class PlantUpdate(PlantCreate):
+    name: Optional[str]
 
 
 class PlantLogCreate(BaseModel):
     timestamp: int
     plant_name: str
     moisture: float
+
+
+# Response models will go there:

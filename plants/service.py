@@ -37,3 +37,11 @@ async def get_by_id(plant_id: int, db: Session):
 async def delete_by_id(plant_id: int, db: Session):
     deleted_item = db.query(Plant).filter(Plant.id == plant_id).delete()
     return deleted_item
+
+
+async def update_by_id(plant_id: int, db: Session):
+    pass
+
+
+async def get_all_user_plants(user_id: int, db: Session):
+    pass
