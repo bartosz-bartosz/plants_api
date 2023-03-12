@@ -18,6 +18,10 @@ class Plant(Base):
     last_watering = Column(DATETIME)
 
 
+class Watering(Base):
+    __tablename__ = "waterings"
+
+
 class PlantLogs(Base):
     """Table for storing plant logs from a microcontroller in the future"""
     __tablename__ = "plant_logs"
