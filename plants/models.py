@@ -19,14 +19,18 @@ class Plant(Base):
 
 class Watering(Base):
     __tablename__ = "waterings"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    plant_id: Mapped[int] = mapped_column(Integer, ForeignKey="plants.id")
+    timestamp = mapped_column(DateTime, nullable=False)
+    fertilizer: Mapped[bool] = mapped_column(Integer)
 
 
 class PlantLogs(Base):
     """Table for storing plant logs from a microcontroller in the future"""
     __tablename__ = "plant_logs"
 
-    id = mapped_column(Integer, primary_key=True, index=True)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     timestamp = mapped_column(DateTime)
-    plant_name = mapped_column(String, nullable=False)
-    moisture = mapped_column(Float, nullable=False)
+    plant_name: Mapped[str] = mapped_column(String, nullable=False)
+    moisture: Mapped[float] = mapped_column(Float, nullable=False)
     
