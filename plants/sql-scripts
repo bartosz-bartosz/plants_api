@@ -1,0 +1,3 @@
+CREATE TRIGGER update_plant_watering_timestamp AFTER INSERT ON waterings
+FOR EACH ROW
+UPDATE plants SET timestamp = NEW.timestamp WHERE plant_id = NEW.plant_id;

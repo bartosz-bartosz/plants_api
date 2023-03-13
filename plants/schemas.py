@@ -3,8 +3,12 @@ from datetime import datetime
 from pydantic import BaseModel, Field
 
 
-class PlantCreate(BaseModel):
+class PlantBase():
     name: str
+    owner: str
+
+
+class PlantCreate(PlantBase):
     acquire_time: Optional[datetime]
     is_alive: Optional[int] = 1
     species: Optional[str]

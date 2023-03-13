@@ -9,9 +9,11 @@ from auth import get_current_user
 from schemas import ApiUser
 
 from plants import service, models as m
+from plants import crud
 from plants.dependencies import valid_plant_id
-from plants.schemas import PlantCreate, PlantLogCreate
-from plants.models import Plant
+from plants.schemas import Plant, PlantCreate, PlantLogCreate
+# from plants.models import Plant
+
 
 router = APIRouter(
     prefix="/plants",
@@ -19,11 +21,12 @@ router = APIRouter(
 )
 
 
-@router.post('', status_code=status.HTTP_201_CREATED)
-async def create_plant(plant_data: PlantCreate,
+@router.post('', status_code=status.HTTP_201_CREATED, response_model=Plant)
+async def create_plant(plant_in: PlantCreate,
                        db: Session = Depends(get_db),
                        user: ApiUser = Depends(get_current_user)):
-    plant = await service.create_plant(plant_data, user, db)
+    plant = await service.create_plant(plant_in, user, db)
+    plant = crud.plant.create(db=db, obj_in=plant_in)
     return "plant created i hope"
 
 
