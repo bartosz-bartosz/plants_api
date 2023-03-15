@@ -3,7 +3,7 @@ from datetime import datetime
 from pydantic import BaseModel, Field
 
 
-class PlantBase():
+class PlantBase(BaseModel):
     name: str
     owner: str
 

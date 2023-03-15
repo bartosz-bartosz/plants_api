@@ -11,7 +11,7 @@ from schemas import ApiUser
 from plants import service, models as m
 from plants import crud
 from plants.dependencies import valid_plant_id
-from plants.schemas import Plant, PlantCreate, PlantLogCreate
+from plants.schemas import PlantBase, PlantCreate, PlantLogCreate
 # from plants.models import Plant
 
 
@@ -21,7 +21,7 @@ router = APIRouter(
 )
 
 
-@router.post('', status_code=status.HTTP_201_CREATED, response_model=Plant)
+@router.post('', status_code=status.HTTP_201_CREATED, response_model=PlantBase)
 async def create_plant(plant_in: PlantCreate,
                        db: Session = Depends(get_db),
                        user: ApiUser = Depends(get_current_user)):
@@ -53,7 +53,7 @@ async def delete_plant(db: Session = Depends(get_db),
 async def read_plant_list(db: Session = Depends(get_db),
                           current_api_user: ApiUser = Depends(get_current_user)):
     if current_api_user.auth_level >= 1:
-        pass
+        return crud.plant.get_multi(db=db)
 
 
 @router.post("/log")

@@ -8,7 +8,7 @@ class Plant(Base):
     """Basic model for plants table"""
     __tablename__ = "plants"
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
-    user_id: Mapped[int] = mapped_column(Integer, ForeignKey="api_users.id")
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("api_users.id"))
     name: Mapped[str] = mapped_column(String, nullable=False)
     acquire_time= mapped_column(DateTime)
     is_alive: Mapped[bool] = mapped_column(Integer)
@@ -20,10 +20,10 @@ class Plant(Base):
 class Watering(Base):
     __tablename__ = "waterings"
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
-    plant_id: Mapped[int] = mapped_column(Integer, ForeignKey="plants.id")
+    plant_id: Mapped[int] = mapped_column(Integer, ForeignKey("plants.id"))
     timestamp = mapped_column(DateTime, nullable=False)
     fertilizer: Mapped[bool] = mapped_column(Integer)
-    user_id: Mapped[int] = mapped_column(Integer, ForeignKey="api_users.id")
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("api_users.id"))
 
 
 class PlantLogs(Base):
@@ -35,4 +35,4 @@ class PlantLogs(Base):
     timestamp = mapped_column(DateTime)
     plant_name: Mapped[str] = mapped_column(String, nullable=False)
     moisture: Mapped[float] = mapped_column(Float, nullable=False)
-    
+
