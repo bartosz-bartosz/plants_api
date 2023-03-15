@@ -11,7 +11,8 @@ from schemas import ApiUser
 from plants import service, models as m
 from plants import crud
 from plants.dependencies import valid_plant_id
-from plants.schemas import PlantBase, PlantCreate, PlantLogCreate
+from plants.schemas import PlantBase, PlantCreate, PlantLogCreate, Plant
+
 # from plants.models import Plant
 
 
@@ -30,23 +31,23 @@ async def create_plant(plant_in: PlantCreate,
     return "plant created i hope"
 
 
-@router.get('/{id}')
-async def read_plant(db: Session = Depends(get_db),
-                     current_api_user: ApiUser = Depends(get_current_user),
-                     plant: Mapping = Depends(valid_plant_id)):
-    return plant
+@router.get('/{plant_id}', status_code=status.HTTP_200_OK, response_model=Plant)
+async def fetch_plant(plant_id: int,
+                      db: Session = Depends(get_db),
+                      current_api_user: ApiUser = Depends(get_current_user)):
+    return crud.plant.get(db=db, obj_id=plant_id)
 
 
-@router.put('/{id}')
+@router.put('/{plant_id}')
 async def update_plant(db: Session = Depends(get_db),
                        current_api_user: ApiUser = Depends(get_current_user)):
     pass
 
 
-@router.delete('/{id}')
+@router.delete('/{plant_id}')
 async def delete_plant(db: Session = Depends(get_db),
                        current_api_user: ApiUser = Depends(get_current_user)):
-    pass
+    return crud.plant.delete(db=db, obj_id=plant_id)
 
 
 @router.get('')

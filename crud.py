@@ -24,8 +24,8 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         """
         self.model = model
 
-    def get(self, db: Session, id: Any) -> Optional[ModelType]:
-        query = select(self.model).where(self.model.id == id)
+    def get(self, db: Session, obj_id: Any) -> Optional[ModelType]:
+        query = select(self.model).where(self.model.id == obj_id)
         return db.execute(query).scalar_one_or_none()
 
     def get_multi(self, db: Session, *, skip: int = 0, limit: int = 100) -> List[ModelType]:
@@ -39,3 +39,9 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         db.commit()
         db.refresh(db_obj)
         return db_obj
+
+    def delete(self, db: Session, *, obj_id: int) -> ModelType:
+        obj = select(self.model).where(self.model.id == obj_id)
+        db.delete(obj)
+        db.commit()
+        return obj

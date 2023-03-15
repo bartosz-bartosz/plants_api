@@ -5,7 +5,6 @@ from pydantic import BaseModel, Field
 
 class PlantBase(BaseModel):
     name: str
-    owner: str
 
 
 class PlantCreate(PlantBase):
@@ -26,4 +25,15 @@ class PlantLogCreate(BaseModel):
     moisture: float
 
 
-# Response models will go there:
+# Database models:
+class PlantDB(PlantBase):
+    id: int
+    user_id: int
+
+    class Config:
+        orm_mode = True
+
+
+# Response models:
+class Plant(PlantDB):
+    pass
