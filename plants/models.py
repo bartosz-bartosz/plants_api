@@ -8,7 +8,7 @@ class Plant(Base):
     """Basic model for plants table"""
     __tablename__ = "plants"
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
-    owner_id: Mapped[int] = mapped_column(Integer)
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey="api_users.id")
     name: Mapped[str] = mapped_column(String, nullable=False)
     acquire_time= mapped_column(DateTime)
     is_alive: Mapped[bool] = mapped_column(Integer)
@@ -23,10 +23,12 @@ class Watering(Base):
     plant_id: Mapped[int] = mapped_column(Integer, ForeignKey="plants.id")
     timestamp = mapped_column(DateTime, nullable=False)
     fertilizer: Mapped[bool] = mapped_column(Integer)
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey="api_users.id")
 
 
 class PlantLogs(Base):
-    """Table for storing plant logs from a microcontroller in the future"""
+    """Table for storing plant logs from a microcontroller in the future
+    needs plant_id foreign key"""
     __tablename__ = "plant_logs"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
