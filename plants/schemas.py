@@ -26,6 +26,21 @@ class PlantLogCreate(BaseModel):
     moisture: float
 
 
+class WateringBase:
+    id: int
+
+
+class WateringCreate(WateringBase):
+    plant_id: int
+    user_id: int
+    timestamp: Optional[datetime]
+    fertilizer: bool = Field(default=False)
+
+
+class WateringUpdate(WateringBase):
+    ...
+
+
 # ----------------------------------- DATABASE MODELS
 class PlantDB(PlantBase):
     id: int

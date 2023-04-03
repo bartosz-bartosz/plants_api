@@ -7,6 +7,7 @@ from db import Base
 class Plant(Base):
     """Basic model for plants table"""
     __tablename__ = "plants"
+
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey("api_users.id"))
     name: Mapped[str] = mapped_column(String, nullable=False)
@@ -18,7 +19,9 @@ class Plant(Base):
 
 
 class Watering(Base):
+    """Basic model for waterings table"""
     __tablename__ = "waterings"
+
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     plant_id: Mapped[int] = mapped_column(Integer, ForeignKey("plants.id"))
     timestamp = mapped_column(DateTime, nullable=False)
