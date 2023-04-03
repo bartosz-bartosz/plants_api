@@ -19,3 +19,11 @@ class ApiUser(BaseModel):
 
 class ApiUserSignup(ApiUser):
     password: Union[str, None] = None
+
+
+# ------------------------------------- RESPONSE MODELS
+class ApiUserSafeResponse(ApiUser):
+    username: str
+    auth_level: int
+    id: int
+

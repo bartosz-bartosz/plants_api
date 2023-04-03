@@ -73,4 +73,4 @@ async def get_current_user(db: Session = Depends(get_db),
         raise credentials_exception
 
     user_dict = user.__dict__
-    return user
+    return user_dict

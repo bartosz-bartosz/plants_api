@@ -51,5 +51,7 @@ class PlantDB(PlantBase):
 
 
 # ----------------------------------- RESPONSE MODELS
+
+
 class Plant(PlantDB):
     pass

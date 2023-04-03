@@ -45,7 +45,7 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
 # async def json_for_access_token(json_data: OAuth2PasswordBearer)
 
 
-@app.get("/users/me")
+@app.get("/users/me", response_model=sc.ApiUserSafeResponse)
 async def read_users_me(current_user: m.ApiUser = Depends(get_current_user)):
     return current_user
 
