@@ -3,6 +3,7 @@ from datetime import datetime
 from pydantic import BaseModel, Field
 
 
+# ----------------------------------- FORM SCHEMAS
 class PlantBase(BaseModel):
     name: str
 
@@ -25,7 +26,7 @@ class PlantLogCreate(BaseModel):
     moisture: float
 
 
-# Database models:
+# ----------------------------------- DATABASE MODELS
 class PlantDB(PlantBase):
     id: int
     user_id: int
@@ -34,6 +35,6 @@ class PlantDB(PlantBase):
         orm_mode = True
 
 
-# Response models:
+# ----------------------------------- RESPONSE MODELS
 class Plant(PlantDB):
     pass

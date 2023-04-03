@@ -26,9 +26,8 @@ router = APIRouter(
 async def create_plant(plant_in: PlantCreate,
                        db: Session = Depends(get_db),
                        user: ApiUser = Depends(get_current_user)):
-    plant = await service.create_plant(plant_in, user, db)
     plant = crud.plant.create(db=db, obj_in=plant_in)
-    return "plant created i hope"
+    return plant
 
 
 @router.get('/{plant_id}', status_code=status.HTTP_200_OK, response_model=Plant)
@@ -45,7 +44,8 @@ async def update_plant(db: Session = Depends(get_db),
 
 
 @router.delete('/{plant_id}')
-async def delete_plant(db: Session = Depends(get_db),
+async def delete_plant(plant_id: int,
+                       db: Session = Depends(get_db),
                        current_api_user: ApiUser = Depends(get_current_user)):
     return crud.plant.delete(db=db, obj_id=plant_id)
 

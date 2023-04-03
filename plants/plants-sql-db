@@ -1,0 +1,48 @@
+-- we don't know how to generate root <with-no-name> (class Root) :(
+create table api_users
+(
+    id              int auto_increment
+        primary key,
+    username        varchar(100)  not null,
+    hashed_password varchar(120)  not null,
+    auth_level      int default 1 not null
+);
+
+create table plant_logs
+(
+    id         int auto_increment
+        primary key,
+    timestamp  datetime default current_timestamp() null,
+    plant_name varchar(120)                         not null,
+    moisture   float                                not null
+);
+
+create table plants
+(
+    id                 int auto_increment
+        primary key,
+    user_id            int           not null,
+    name               varchar(100)  not null,
+    acquire_time       datetime      not null,
+    is_alive           int default 1 null,
+    species            varchar(120)  null,
+    watering_frequency int           null comment 'days',
+    last_watering      datetime      null,
+    constraint plants_api_users_id_fk
+        foreign key (user_id) references api_users (id)
+);
+
+create table waterings
+(
+    id         int auto_increment
+        primary key,
+    plant_id   int                                  not null,
+    timestamp  datetime default current_timestamp() not null,
+    fertilizer tinyint  default 0                   not null,
+    user_id    int                                  not null,
+    constraint waterings_api_users_id_fk
+        foreign key (user_id) references api_users (id),
+    constraint waterings_plants_id_fk
+        foreign key (plant_id) references plants (id)
+);
+
