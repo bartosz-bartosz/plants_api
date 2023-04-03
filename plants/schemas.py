@@ -9,6 +9,7 @@ class PlantBase(BaseModel):
 
 
 class PlantCreate(PlantBase):
+    user_id: int
     acquire_time: Optional[datetime]
     is_alive: Optional[int] = 1
     species: Optional[str]
