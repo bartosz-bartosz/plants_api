@@ -36,6 +36,7 @@ async def get_item(watering_id: int,
 async def get_list(watering_filters: WateringQuerySchema,
                    db: Session = Depends(get_db),
                    user: ApiUser = Depends(get_current_user)):
+    # TODO return list of waterings
     return ...
 
 
@@ -44,3 +45,10 @@ async def update_item(watering_id: int, watering_data: WateringUpdate,
                       db: Session = Depends(get_db),
                       user: ApiUser = Depends(get_current_user)):
     return watering_crud.update(db=db, db_obj=watering_crud.get(db=db, id=watering_id), obj_in=watering_data)
+
+
+@watering_router.delete("/watering_id", status_code=status.HTTP_200_OK)
+async def delete_item(watering_id: int,
+                      db: Session = Depends(get_db),
+                      user: ApiUser = Depends(get_current_user)):
+    return watering_crud.remove(db=db, id=watering_id)
