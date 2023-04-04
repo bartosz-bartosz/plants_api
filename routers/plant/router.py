@@ -11,8 +11,6 @@ from routers.plant import models as m
 from routers.plant.crud import plant_crud
 from routers.plant.schemas import PlantBase, PlantCreate, PlantUpdate, PlantLogCreate, Plant
 
-# from plant.models import Plant
-
 
 plant_router = APIRouter(
     prefix="/plant",

@@ -1,10 +1,10 @@
 from datetime import datetime
 from typing import Optional
 
-from pydantic import Field
+from pydantic import Field, BaseModel
 
 
-class WateringBase:
+class WateringBase(BaseModel):
     id: int
 
 
