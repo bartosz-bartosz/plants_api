@@ -9,6 +9,7 @@ class PlantBase(BaseModel):
 
 
 class PlantCreate(PlantBase):
+    # TODO date format to be specified correctly/validated
     user_id: int
     acquire_time: Optional[datetime]
     is_alive: Optional[int] = 1
