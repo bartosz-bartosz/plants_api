@@ -17,3 +17,8 @@ class WateringCreate(WateringBase):
 
 class WateringUpdate(WateringBase):
     ...
+
+
+class WateringQuerySchema(WateringBase):
+    """ to do """
+    ...
