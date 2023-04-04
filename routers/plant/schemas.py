@@ -1,6 +1,6 @@
-from typing import Union, Optional
+from typing import Optional
 from datetime import datetime
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 
 # ----------------------------------- FORM SCHEMAS
@@ -17,6 +17,12 @@ class PlantCreate(PlantBase):
     watering_frequency: Optional[int]
     last_watering: Optional[datetime]
 
+    class Config:
+        orm_mode = True
+        json_encoders = {
+            datetime: lambda v: v.strftime('%Y-%m-%d %H:%M:%S')
+        }
+
 
 class PlantUpdate(PlantCreate):
     name: Optional[str]
@@ -26,21 +32,6 @@ class PlantLogCreate(BaseModel):
     timestamp: int
     plant_name: str
     moisture: float
-
-
-class WateringBase:
-    id: int
-
-
-class WateringCreate(WateringBase):
-    plant_id: int
-    user_id: int
-    timestamp: Optional[datetime]
-    fertilizer: bool = Field(default=False)
-
-
-class WateringUpdate(WateringBase):
-    ...
 
 
 # ----------------------------------- DATABASE MODELS

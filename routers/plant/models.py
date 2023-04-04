@@ -1,12 +1,12 @@
-from sqlalchemy import Boolean, Column, Integer, String, ForeignKey, Enum, Text, Float, DateTime
-from sqlalchemy.orm import Mapped, relationship, mapped_column
+from sqlalchemy import Integer, String, ForeignKey, Float, DateTime
+from sqlalchemy.orm import Mapped, mapped_column
 
 from db import Base
 
 
 class Plant(Base):
-    """Basic model for plants table"""
-    __tablename__ = "plants"
+    """Basic model for plant table"""
+    __tablename__ = "plant"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey("api_users.id"))
@@ -16,17 +16,6 @@ class Plant(Base):
     species: Mapped[str] = mapped_column(String, nullable=False)
     watering_frequency: Mapped[int] = mapped_column(Integer)
     last_watering = mapped_column(DateTime)
-
-
-class Watering(Base):
-    """Basic model for waterings table"""
-    __tablename__ = "waterings"
-
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
-    plant_id: Mapped[int] = mapped_column(Integer, ForeignKey("plants.id"))
-    timestamp = mapped_column(DateTime, nullable=False)
-    fertilizer: Mapped[bool] = mapped_column(Integer)
-    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("api_users.id"))
 
 
 class PlantLogs(Base):

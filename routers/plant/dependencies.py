@@ -4,8 +4,7 @@ from fastapi import Depends
 from sqlalchemy.orm import Session
 
 from db import get_db
-from plants import service
-from plants.exceptions import PlantNotFound
+from routers.plant.exceptions import PlantNotFound
 
 
 async def valid_plant_id(plant_id: int,

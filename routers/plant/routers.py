@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import Mapping
 
 from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.orm import Session
@@ -8,17 +7,16 @@ from db import get_db
 from auth import get_current_user
 from schemas import ApiUser
 
-from plants import service, models as m
-from plants import crud
-from plants.dependencies import valid_plant_id
-from plants.schemas import PlantBase, PlantCreate, PlantUpdate, PlantLogCreate, Plant
+from routers.plant import models as m
+from routers.plant import crud
+from routers.plant.schemas import PlantBase, PlantCreate, PlantUpdate, PlantLogCreate, Plant
 
-# from plants.models import Plant
+# from plant.models import Plant
 
 
 router = APIRouter(
-    prefix="/plants",
-    tags=['plants']
+    prefix="/plant",
+    tags=['plant']
 )
 
 
@@ -28,7 +26,7 @@ async def create_plant(plant_in: PlantCreate,
                        user: ApiUser = Depends(get_current_user)):
     plant_in.user_id = user.id
     plant = crud.plant.create(db=db, new_obj=plant_in)
-    return plant
+    return plant.__dict__
 
 
 @router.get('/{plant_id}', status_code=status.HTTP_200_OK, response_model=Plant)

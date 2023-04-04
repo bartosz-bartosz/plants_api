@@ -1,4 +1,4 @@
-from plants.constants import ErrorCode
+from routers.plant.constants import ErrorCode
 
 
 class PlantNotFound:

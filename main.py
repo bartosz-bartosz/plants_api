@@ -1,11 +1,11 @@
 from datetime import timedelta
 
 from fastapi import Depends, FastAPI, HTTPException, status
-from fastapi.security import OAuth2AuthorizationCodeBearer, OAuth2PasswordRequestForm, OAuth2PasswordBearer
+from fastapi.security import OAuth2PasswordRequestForm
 
 from sqlalchemy.orm import Session
 
-from plants import routers
+from routers.plant import routers
 from auth import get_current_user, create_access_token, authenticate_user, get_password_hash
 from db import get_db
 import schemas as sc
