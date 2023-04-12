@@ -9,10 +9,9 @@ class PlantBase(BaseModel):
 
 
 class PlantCreate(PlantBase):
-    # TODO date format to be specified correctly/validated
     user_id: int
     acquire_time: Optional[datetime]
-    is_alive: Optional[int] = 1
+    is_alive: Optional[int | bool] = 1
     species: Optional[str]
     watering_frequency: Optional[int]
     last_watering: Optional[datetime]
@@ -25,7 +24,22 @@ class PlantCreate(PlantBase):
 
     @validator('name')
     def username_length(cls, v):
-        assert 0 < len(v) < 200, 'must be between 1 and 200 characters'
+        assert 2 <= len(v) <= 200, 'must be between 2 and 200 characters'
+        return v
+
+    @validator('is_alive')
+    def is_alive_bool(cls, v):
+        assert v in (0, 1, True, False), 'must be boolean, 0 or 1'
+        return v
+
+    @validator('species')
+    def species_length(cls, v):
+        assert 2 <= len(v) <= 200, 'must be between 2 and 200 characters'
+        return v
+
+    @validator('watering_frequency')
+    def max_watering_frequency(cls, v):
+        assert len(v) < 365, 'no plant can be watered so rarely!'
         return v
 
 
@@ -49,7 +63,5 @@ class PlantDB(PlantBase):
 
 
 # ----------------------------------- RESPONSE MODELS
-
-
 class Plant(PlantDB):
     pass

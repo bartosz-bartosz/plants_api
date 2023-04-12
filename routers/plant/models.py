@@ -1,5 +1,5 @@
 from sqlalchemy import Integer, String, ForeignKey, Float, DateTime
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, validates
 
 from db import Base
 
@@ -16,6 +16,12 @@ class Plant(Base):
     species: Mapped[str] = mapped_column(String, nullable=False)
     watering_frequency: Mapped[int] = mapped_column(Integer)
     last_watering = mapped_column(DateTime)
+
+    @validates('name')
+    def validate_name(self, key, value: str):
+        if not 2 <= len(value) <= 200:
+            raise ValueError("Name length must be between 2 and 200 characters")
+        return value
 
 
 class PlantLogs(Base):
