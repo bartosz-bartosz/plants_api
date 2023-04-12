@@ -16,6 +16,7 @@ def test_name():
 
     # Wrong models
     with pytest.raises(ValueError):
+        #   name empty
         name_fail = Plant(user_id=1,
                           name='',
                           acquire_time=datetime.now,
@@ -25,6 +26,7 @@ def test_name():
                           last_watering=datetime.now)
 
     with pytest.raises(ValueError):
+        #   name too short
         name_fail = Plant(user_id=1,
                           name='a',
                           acquire_time=datetime.now,
@@ -34,6 +36,7 @@ def test_name():
                           last_watering=datetime.now)
 
     with pytest.raises(ValueError):
+        #   name too long
         name_fail = Plant(user_id=1,
                           name=''.join(["i" for _ in range(201)]),
                           acquire_time=datetime.now,
