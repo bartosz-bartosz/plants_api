@@ -1,6 +1,4 @@
-# hesitant_api
+# plants_api
 
-Main Python API project using FastAPI & SQLAlchemy frameworks with MySQL DB.
-
-Currently developing PLANTS app for managing home plants. 
-The aim of this project is to provide an efficient and easy-to-use solution for managing home plants - keeping track of watering them, gathering statistics, and generally not making them die.
+Welcome to the PLANTS app, a Python API project built using the FastAPI and SQLAlchemy frameworks with a MySQL database.
+The aim of this project is to provide an efficient and easy-to-use solution for managing home plants - keeping track of watering times, gathering statistics, and generally not making them die.
