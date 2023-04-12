@@ -35,6 +35,8 @@ def test_plant_create_schema_correct_data(name, user_id, acquire_time, is_alive,
         ("test plant name", 1, "invalid", 1, "plant species", 7, "2023-04-10T12:00:29.275Z"),  # invalid acquire_time
         ("test plant name", 1, "2023-04-12T18:11:29.275Z", 1, "plant species", "", "2023-04-10T12:00:29.275Z"),  # empty watering_frequency
         ("test plant name", 1, "2023-04-12T18:11:29.275Z", 1, "plant species", 7, "invalid"),  # invalid last_watering
+        ("test plant name", 1, "2023/04/12T18:11:29.275Z", 1, "plant species", 7, "2023-04-10T12:00:29.275Z"),  # incorrect datetime format
+        ("test plant name", 1, "string_instead_of_datetime", 1, "plant species", 7, "2023-04-10T12:00:29.275Z"),  # incorrect datetime format
     ],
 )
 def test_plant_create_schema_incorrect_data(name, user_id, acquire_time, is_alive, species, watering_frequency, last_watering):

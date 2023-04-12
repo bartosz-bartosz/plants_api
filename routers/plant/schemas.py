@@ -1,6 +1,6 @@
 from typing import Optional
 from datetime import datetime
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, validator, root_validator
 
 
 # ----------------------------------- FORM SCHEMAS
@@ -24,7 +24,7 @@ class PlantCreate(PlantBase):
         }
 
     @validator('name')
-    def username_alphanumeric(cls, v):
+    def username_length(cls, v):
         assert 0 < len(v) < 200, 'must be between 1 and 200 characters'
         return v
 
