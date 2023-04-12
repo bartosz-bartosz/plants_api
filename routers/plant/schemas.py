@@ -1,6 +1,6 @@
 from typing import Optional
 from datetime import datetime
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
 
 
 # ----------------------------------- FORM SCHEMAS
@@ -22,6 +22,11 @@ class PlantCreate(PlantBase):
         json_encoders = {
             datetime: lambda v: v.strftime('%Y-%m-%d %H:%M:%S')
         }
+
+    @validator('name')
+    def username_alphanumeric(cls, v):
+        assert 0 < len(v) < 200, 'must be between 1 and 200 characters'
+        return v
 
 
 class PlantUpdate(PlantCreate):
