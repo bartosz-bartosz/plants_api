@@ -65,6 +65,7 @@ async def read_plant_list(db: Session = Depends(get_db),
 async def create_plant_log(form_data: PlantLogCreate,
                            db: Session = Depends(get_db),
                            current_api_user: ApiUser = Depends(get_current_user)):
+    """ This endpoint is just a placeholder, in the future 'logs' endpoints should have their own directory """
     if current_api_user.auth_level >= 1:
         timestamp = datetime.fromtimestamp(form_data.timestamp)
         plant_log = m.PlantLogs(timestamp=timestamp,
