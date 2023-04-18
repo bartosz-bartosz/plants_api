@@ -1,7 +1,7 @@
 import pytest
 from pydantic import ValidationError
 
-from routers.plant.schemas import PlantCreate, PlantUpdate
+from src.app.routers.plant.schemas import PlantCreate
 
 
 @pytest.mark.parametrize(

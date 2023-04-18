@@ -1,7 +1,7 @@
 import pytest
 
 from datetime import datetime
-from routers.plant.models import Plant
+from src.app.routers.plant.models import Plant
 
 
 def test_name():

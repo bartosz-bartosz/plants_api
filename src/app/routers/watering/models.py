@@ -3,7 +3,7 @@ from datetime import datetime
 from sqlalchemy import Integer, ForeignKey, DateTime
 from sqlalchemy.orm import Mapped, mapped_column, validates
 
-from db import Base
+from src.app.db import Base
 
 
 class Watering(Base):

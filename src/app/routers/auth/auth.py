@@ -9,7 +9,7 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 
 import models
-from db import get_db
+from src.app.db import get_db
 
 from dotenv import load_dotenv
 

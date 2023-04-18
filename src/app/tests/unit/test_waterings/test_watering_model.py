@@ -1,7 +1,5 @@
-import pytest
-
 from datetime import datetime
-from routers.watering.models import Watering
+from src.app.routers.watering.models import Watering
 
 
 def test_model_correct():

@@ -1,8 +1,6 @@
-from sqlalchemy import Boolean, Column, Integer, String, ForeignKey, Enum, Text, Float
-from sqlalchemy.dialects.mysql import DATETIME
-from sqlalchemy.orm import relationship
+from sqlalchemy import Column, Integer, String
 
-from db import Base
+from src.app.db import Base
 
 
 class ApiUser(Base):

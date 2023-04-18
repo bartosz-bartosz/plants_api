@@ -1,7 +1,6 @@
 import pytest
-from pydantic import ValidationError
 
-from routers.watering.schemas import WateringCreate, WateringQuerySchema
+from src.app.routers.watering.schemas import WateringCreate
 
 
 @pytest.mark.parametrize(
