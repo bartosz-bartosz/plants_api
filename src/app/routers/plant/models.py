@@ -1,7 +1,7 @@
 from sqlalchemy import Integer, String, ForeignKey, Float, DateTime
 from sqlalchemy.orm import Mapped, mapped_column, validates
 
-from src.app.db import Base
+from app.db import Base
 
 
 class Plant(Base):

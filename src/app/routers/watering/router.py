@@ -1,12 +1,12 @@
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 
-from src.app.db import get_db
-from src.app.routers.auth.auth import get_current_user
-from src.app.routers.auth.schemas import ApiUser
+from app.db import get_db
+from app.routers.auth.auth import get_current_user
+from app.routers.auth.schemas import ApiUser
 
-from src.app.routers.watering.crud import watering_crud
-from src.app.routers.watering.schemas import WateringBase, WateringCreate, WateringUpdate, WateringQuerySchema
+from app.routers.watering.crud import watering_crud
+from app.routers.watering.schemas import WateringBase, WateringCreate, WateringUpdate, WateringQuerySchema
 
 watering_router = APIRouter(
     prefix="/watering",

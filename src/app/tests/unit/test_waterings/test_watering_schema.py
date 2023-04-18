@@ -1,6 +1,6 @@
 import pytest
 
-from src.app.routers.watering.schemas import WateringCreate
+from app.routers.watering.schemas import WateringCreate
 
 
 @pytest.mark.parametrize(

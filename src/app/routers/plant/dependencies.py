@@ -3,9 +3,9 @@ from typing import Mapping
 from fastapi import Depends
 from sqlalchemy.orm import Session
 
-from src.app.db import get_db
-from src.app.routers.plant.exceptions import PlantNotFound
-from src.app.routers.plant.crud import plant_crud
+from app.db import get_db
+from app.routers.plant.exceptions import PlantNotFound
+from app.routers.plant.crud import plant_crud
 
 
 async def valid_plant_id(plant_id: int,

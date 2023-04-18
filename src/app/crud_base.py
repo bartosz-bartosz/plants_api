@@ -5,7 +5,7 @@ from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from db import Base
+from app.db import Base
 
 
 ModelType = TypeVar("ModelType", bound=Base)

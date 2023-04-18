@@ -1,5 +1,5 @@
 from datetime import datetime
-from src.app.routers.watering.models import Watering
+from app.routers.watering.models import Watering
 
 
 def test_model_correct():

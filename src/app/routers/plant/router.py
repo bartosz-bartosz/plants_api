@@ -3,13 +3,13 @@ from datetime import datetime
 from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.orm import Session
 
-from src.app.db import get_db
-from src.app.routers.auth.auth import get_current_user
-from src.app.routers.auth.schemas import ApiUser
+from app.db import get_db
+from app.routers.auth.auth import get_current_user
+from app.routers.auth.schemas import ApiUser
 
-from src.app.routers.plant import models as m
-from src.app.routers.plant.crud import plant_crud
-from src.app.routers.plant.schemas import PlantBase, PlantCreate, PlantUpdate, PlantLogCreate, Plant
+from app.routers.plant import models as m
+from app.routers.plant.crud import plant_crud
+from app.routers.plant.schemas import PlantBase, PlantCreate, PlantUpdate, PlantLogCreate, Plant
 
 
 plant_router = APIRouter(

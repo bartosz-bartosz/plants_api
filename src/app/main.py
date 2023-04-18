@@ -5,11 +5,11 @@ from fastapi.security import OAuth2PasswordRequestForm
 
 from sqlalchemy.orm import Session
 
-from routers.plant.router import plant_router
-from routers.watering.router import watering_router
-from routers.auth.auth import get_current_user, create_access_token, authenticate_user, get_password_hash
-from db import get_db
-from routers.auth import models as m, schemas as sc
+from app.routers.plant.router import plant_router
+from app.routers.watering.router import watering_router
+from app.routers.auth.auth import get_current_user, create_access_token, authenticate_user, get_password_hash
+from app.db import get_db
+from app.routers.auth import models as m, schemas as sc
 
 app = FastAPI()
 
