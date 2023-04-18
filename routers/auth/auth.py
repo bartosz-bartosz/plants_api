@@ -3,13 +3,12 @@ from typing import Union
 from datetime import datetime, timedelta
 
 from fastapi import Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 
 import models
-import schemas as sc
 from db import get_db
 
 from dotenv import load_dotenv

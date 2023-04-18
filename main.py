@@ -7,10 +7,9 @@ from sqlalchemy.orm import Session
 
 from routers.plant.router import plant_router
 from routers.watering.router import watering_router
-from auth import get_current_user, create_access_token, authenticate_user, get_password_hash
+from routers.auth.auth import get_current_user, create_access_token, authenticate_user, get_password_hash
 from db import get_db
-import schemas as sc
-import models as m
+from routers.auth import models as m, schemas as sc
 
 app = FastAPI()
 

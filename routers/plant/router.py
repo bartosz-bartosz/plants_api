@@ -4,8 +4,8 @@ from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.orm import Session
 
 from db import get_db
-from auth import get_current_user
-from schemas import ApiUser
+from routers.auth.auth import get_current_user
+from routers.auth.schemas import ApiUser
 
 from routers.plant import models as m
 from routers.plant.crud import plant_crud
