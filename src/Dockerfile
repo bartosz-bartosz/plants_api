@@ -16,4 +16,4 @@ RUN set -eux \
 
 COPY . /usr/src/app/
 
-CMD ["python3.11", "-m", "uvicorn", "app.main:app", "--reload"]
+CMD ["uvicorn", "app.main:app", "--reload", "--host", "0.0.0.0", "--port", "8000"]
