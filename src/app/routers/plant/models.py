@@ -21,14 +21,15 @@ class Plant(Base):
     is_alive: Mapped[bool] = mapped_column(Integer)
     species: Mapped[str] = mapped_column(String, nullable=False)
     watering_frequency: Mapped[int] = mapped_column(Integer)
-    last_watering = mapped_column(DateTime)
 
     # relationships
     waterings: Mapped[List["Watering"]] = relationship("Watering", back_populates="plant")
 
-    # @property
-    # def last_watering(self) -> Watering:
-    #     self.waterings
+    @property
+    def last_watering(self) -> DateTime | None:
+        if not self.waterings:
+            return None
+        return sorted([watering_time.timestamp for watering_time in self.waterings])[0]
 
     @validates('name')
     def validate_name(self, key, value: str):

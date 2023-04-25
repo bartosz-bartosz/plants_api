@@ -24,7 +24,12 @@ class Watering(Base):
     plant: Mapped["Plant"] = relationship("Plant", back_populates="waterings")
 
     @validates('timestamp')
-    def validate_timestamp(self, key, value):
-        if not type(value) == datetime:
-            raise ValueError('Incorrect datetime format')
+    def validate_timestamp(self, key, value: datetime):
+        print(value)
+        if isinstance(value, str):
+            try:
+                value = datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f%z')
+            except (ValueError, TypeError):
+                value = None
+                # raise ValueError('Incorrect datetime format')
         return value

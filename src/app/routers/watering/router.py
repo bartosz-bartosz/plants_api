@@ -19,7 +19,7 @@ async def create_watering(watering_in: WateringCreate,
                           db: Session = Depends(get_db),
                           user: ApiUser = Depends(get_current_user)):
     watering_in.user_id = user.id
-    watering = watering_crud.plant.create(db=db, new_obj=watering_in)
+    watering = watering_crud.create(db=db, new_obj=watering_in)
     return watering.__dict__
 
 

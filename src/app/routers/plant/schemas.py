@@ -1,6 +1,8 @@
-from typing import Optional
+from typing import Optional, List
 from datetime import datetime
 from pydantic import BaseModel, validator, root_validator
+
+from app.routers.watering.models import Watering
 
 
 # ----------------------------------- FORM SCHEMAS
@@ -14,7 +16,6 @@ class PlantCreate(PlantBase):
     is_alive: Optional[int | bool] = 1
     species: Optional[str]
     watering_frequency: Optional[int]
-    last_watering: Optional[datetime]
 
     class Config:
         orm_mode = True
@@ -63,5 +64,7 @@ class PlantDB(PlantBase):
 
 
 # ----------------------------------- RESPONSE MODELS
-class Plant(PlantDB):
-    pass
+class PlantResponse(PlantDB):
+    species: Optional[str]
+    watering_frequency: Optional[int]
+    last_watering: Optional[datetime]

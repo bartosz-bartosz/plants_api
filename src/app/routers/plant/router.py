@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import List
 
 from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.orm import Session
@@ -9,7 +10,7 @@ from app.routers.auth.schemas import ApiUser
 
 from app.routers.plant import models as m
 from app.routers.plant.crud import plant_crud
-from app.routers.plant.schemas import PlantBase, PlantCreate, PlantUpdate, PlantLogCreate, Plant
+from app.routers.plant.schemas import PlantBase, PlantCreate, PlantUpdate, PlantLogCreate, PlantResponse
 
 
 plant_router = APIRouter(
@@ -27,7 +28,7 @@ async def create_plant(plant_in: PlantCreate,
     return plant.__dict__
 
 
-@plant_router.get('/{plant_id}', status_code=status.HTTP_200_OK, response_model=Plant)
+@plant_router.get('/{plant_id}', status_code=status.HTTP_200_OK, response_model=PlantResponse)
 async def fetch_plant(plant_id: int,
                       db: Session = Depends(get_db),
                       current_api_user: ApiUser = Depends(get_current_user)):
@@ -54,7 +55,7 @@ async def delete_plant(plant_id: int,
     return plant_crud.delete(db=db, obj_id=plant_id)
 
 
-@plant_router.get('')
+@plant_router.get('', status_code=status.HTTP_200_OK, response_model=List[PlantResponse])
 async def read_plant_list(db: Session = Depends(get_db),
                           current_api_user: ApiUser = Depends(get_current_user)):
     if current_api_user.auth_level >= 1:
