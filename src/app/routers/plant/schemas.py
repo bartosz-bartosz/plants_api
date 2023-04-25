@@ -39,7 +39,7 @@ class PlantCreate(PlantBase):
 
     @validator('watering_frequency')
     def max_watering_frequency(cls, v):
-        assert len(v) < 365, 'no plant can be watered so rarely!'
+        assert v < 365, 'no plant can be watered so rarely!'
         return v
 
 

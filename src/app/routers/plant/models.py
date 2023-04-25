@@ -1,12 +1,18 @@
+from typing import List, TYPE_CHECKING
+
 from sqlalchemy import Integer, String, ForeignKey, Float, DateTime
-from sqlalchemy.orm import Mapped, mapped_column, validates
+from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.orm import Mapped, mapped_column, validates, relationship
 
 from app.db import Base
+
+if TYPE_CHECKING:
+    from app.routers.watering.models import Watering
 
 
 class Plant(Base):
     """Basic model for plant table"""
-    __tablename__ = "plant"
+    __tablename__ = "plants"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey("api_users.id"))
@@ -16,6 +22,13 @@ class Plant(Base):
     species: Mapped[str] = mapped_column(String, nullable=False)
     watering_frequency: Mapped[int] = mapped_column(Integer)
     last_watering = mapped_column(DateTime)
+
+    # relationships
+    waterings: Mapped[List["Watering"]] = relationship("Watering", back_populates="plant")
+
+    # @property
+    # def last_watering(self) -> Watering:
+    #     self.waterings
 
     @validates('name')
     def validate_name(self, key, value: str):
@@ -33,4 +46,5 @@ class PlantLogs(Base):
     timestamp = mapped_column(DateTime)
     plant_name: Mapped[str] = mapped_column(String, nullable=False)
     moisture: Mapped[float] = mapped_column(Float, nullable=False)
+
 

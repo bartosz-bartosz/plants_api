@@ -23,7 +23,7 @@ async def create_plant(plant_in: PlantCreate,
                        db: Session = Depends(get_db),
                        user: ApiUser = Depends(get_current_user)):
     plant_in.user_id = user.id
-    plant = plant_crud.plant.create(db=db, new_obj=plant_in)
+    plant = plant_crud.create(db=db, new_obj=plant_in)
     return plant.__dict__
 
 
