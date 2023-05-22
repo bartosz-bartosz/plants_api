@@ -27,15 +27,15 @@ async def create_watering(watering_in: WateringCreate,
 async def get_item(watering_id: int,
                    db: Session = Depends(get_db),
                    user: ApiUser = Depends(get_current_user)):
-    return watering_crud.get(db=db, id=watering_id)
+    return watering_crud.get(db=db, obj_id=watering_id)
 
 
 @watering_router.get('', status_code=status.HTTP_200_OK)
 async def get_list(watering_filters: WateringQuerySchema,
                    db: Session = Depends(get_db),
                    user: ApiUser = Depends(get_current_user)):
-    # TODO return list of waterings
-    return ...
+    if user.auth_level >= 1:
+        return watering_crud.get_multi(db=db)
 
 
 @watering_router.patch("/{watering_id}", status_code=status.HTTP_200_OK, response_model=WateringBase)
@@ -49,4 +49,4 @@ async def update_item(watering_id: int, watering_data: WateringUpdate,
 async def delete_item(watering_id: int,
                       db: Session = Depends(get_db),
                       user: ApiUser = Depends(get_current_user)):
-    return watering_crud.remove(db=db, id=watering_id)
+    return watering_crud.delete(db=db, obj_id=watering_id)
