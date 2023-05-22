@@ -31,8 +31,7 @@ async def get_item(watering_id: int,
 
 
 @watering_router.get('', status_code=status.HTTP_200_OK)
-async def get_list(watering_filters: WateringQuerySchema,
-                   db: Session = Depends(get_db),
+async def get_list(db: Session = Depends(get_db),
                    user: ApiUser = Depends(get_current_user)):
     if user.auth_level >= 1:
         return watering_crud.get_multi(db=db)
