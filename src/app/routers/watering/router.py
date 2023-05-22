@@ -42,7 +42,7 @@ async def get_list(watering_filters: WateringQuerySchema,
 async def update_item(watering_id: int, watering_data: WateringUpdate,
                       db: Session = Depends(get_db),
                       user: ApiUser = Depends(get_current_user)):
-    return watering_crud.update(db=db, db_obj=watering_crud.get(db=db, id=watering_id), obj_in=watering_data)
+    return watering_crud.update(db=db, db_obj=watering_crud.get(db=db, obj_id=watering_id), obj_in=watering_data)
 
 
 @watering_router.delete("/watering_id", status_code=status.HTTP_200_OK)
