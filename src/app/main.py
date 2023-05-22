@@ -2,6 +2,7 @@ from datetime import timedelta
 
 from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
+from fastapi.middleware.cors import CORSMiddleware
 
 from sqlalchemy.orm import Session
 
@@ -12,6 +13,11 @@ from app.db import get_db
 from app.routers.auth import models as m, schemas as sc
 
 app = FastAPI()
+
+origins = []
+app.add_middleware(CORSMiddleware,
+                   allow_origins=origins,
+                   allow_headers=['Access-Control-Allow-Origin'])
 
 app.include_router(plant_router)
 app.include_router(watering_router)
