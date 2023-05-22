@@ -22,4 +22,5 @@ archive.zip
 src/.env
 
 api_venv/
-plants_env/
+plants_env
+src/plants_venv/
