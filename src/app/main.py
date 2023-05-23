@@ -16,10 +16,10 @@ app = FastAPI()
 
 origins = ['http://localhost:5173/']
 app.add_middleware(CORSMiddleware,
-                   allow_origins=origins,
+                   allow_origins=['*'],
                    allow_credentials=True,
                    allow_methods=['*'],
-                   allow_headers=['*'])
+                   allow_headers=['*', 'Access-Control-Allow-Origin'])
 
 app.include_router(plant_router)
 app.include_router(watering_router)
