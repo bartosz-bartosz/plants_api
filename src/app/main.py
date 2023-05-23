@@ -14,10 +14,12 @@ from app.routers.auth import models as m, schemas as sc
 
 app = FastAPI()
 
-origins = []
+origins = ['http://localhost:5173/']
 app.add_middleware(CORSMiddleware,
                    allow_origins=origins,
-                   allow_headers=['Access-Control-Allow-Origin'])
+                   allow_credentials=True,
+                   allow_methods=['*'],
+                   allow_headers=['*'])
 
 app.include_router(plant_router)
 app.include_router(watering_router)
