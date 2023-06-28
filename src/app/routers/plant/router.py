@@ -56,10 +56,11 @@ async def delete_plant(plant_id: int,
 
 
 @plant_router.get('', status_code=status.HTTP_200_OK, response_model=List[PlantResponse])
-async def read_plant_list(db: Session = Depends(get_db),
+async def read_plant_list(skip: int = 0, limit: int = 10,
+                          db: Session = Depends(get_db),
                           current_api_user: ApiUser = Depends(get_current_user)):
     if current_api_user.auth_level >= 1:
-        return plant_crud.get_multi(db=db)
+        return plant_crud.get_multi(db=db, skip=skip, limit=limit)
 
 
 @plant_router.post("/log")
