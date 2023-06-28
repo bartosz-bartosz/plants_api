@@ -47,5 +47,3 @@ class PlantLogs(Base):
     timestamp = mapped_column(DateTime)
     plant_name: Mapped[str] = mapped_column(String, nullable=False)
     moisture: Mapped[float] = mapped_column(Float, nullable=False)
-
-
