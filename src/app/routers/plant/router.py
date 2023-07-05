@@ -38,12 +38,13 @@ async def fetch_plant(plant_id: int,
     return plant_crud.get(db=db, obj_id=plant_id)
 
 
-@plant_router.put('/{plant_id}')
+@plant_router.put('/{plant_id}', response_model=PlantResponse)
 async def update_plant(plant_id: int, update_data: PlantUpdate,
                        db: Session = Depends(get_db),
                        current_api_user: ApiUser = Depends(get_current_user)):
-    plant_crud.update(db=db, db_obj=plant_crud.get(db, plant_id), obj_in=update_data)
-    pass
+    plant_obj = plant_crud.get(db, plant_id)
+    plant_crud.update(db=db, db_obj=plant_obj, obj_in=update_data)
+    return plant_crud.get(db=db, obj_id=plant_id)
 
 
 @plant_router.delete('/{plant_id}')
