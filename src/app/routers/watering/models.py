@@ -31,5 +31,5 @@ class Watering(Base):
                 value = datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f%z')
             except (ValueError, TypeError):
                 value = None
-                # raise ValueError('Incorrect datetime format')
+                raise ValueError('Incorrect datetime format')
         return value

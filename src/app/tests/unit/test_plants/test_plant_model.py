@@ -11,8 +11,7 @@ def test_name():
                  acquire_time=datetime.now,
                  is_alive=1,
                  species='plant species',
-                 watering_frequency=7,
-                 last_watering=datetime.now)
+                 watering_frequency=7)
 
     # Wrong models
     with pytest.raises(ValueError):
@@ -22,8 +21,7 @@ def test_name():
                           acquire_time=datetime.now,
                           is_alive=1,
                           species='plant species',
-                          watering_frequency=7,
-                          last_watering=datetime.now)
+                          watering_frequency=7)
 
     with pytest.raises(ValueError):
         # name too short
@@ -32,8 +30,7 @@ def test_name():
                           acquire_time=datetime.now,
                           is_alive=1,
                           species='plant species',
-                          watering_frequency=7,
-                          last_watering=datetime.now)
+                          watering_frequency=7)
 
     with pytest.raises(ValueError):
         # name too long
@@ -42,5 +39,4 @@ def test_name():
                           acquire_time=datetime.now,
                           is_alive=1,
                           species='plant species',
-                          watering_frequency=7,
-                          last_watering=datetime.now)
+                          watering_frequency=7)
