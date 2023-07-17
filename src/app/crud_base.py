@@ -28,7 +28,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         query = select(self.model).where(self.model.id == obj_id)
         return db.execute(query).scalar_one_or_none()
 
-    def get_multi(self, db: Session, *, skip: int = 0, limit: int = 100) -> List[ModelType]:
+    def get_multi(self, db: Session, *, skip: int = 0, limit: int = 100, **kwargs) -> List[ModelType]:
         query = select(self.model).offset(skip).limit(limit)
         return db.execute(query).scalars().all()
     
