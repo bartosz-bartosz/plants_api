@@ -14,7 +14,6 @@ class CRUDWatering(CRUDBase[Watering, WateringCreate, WateringUpdate]):
         if kwargs.get('plant_id'):
             query = select(self.model).offset(skip).limit(limit).where(self.model.plant_id == kwargs['plant_id'])
             return db.execute(query).scalars().all()
-        print('plant_id not found')
         return super().get_multi(db, skip=skip, limit=limit)
 
 
