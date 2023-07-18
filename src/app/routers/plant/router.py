@@ -19,6 +19,7 @@ plant_router = APIRouter(
 )
 
 
+#  BASIC CRUD
 @plant_router.post('', status_code=status.HTTP_201_CREATED, response_model=PlantBase)
 async def create_plant(plant_in: PlantCreate,
                        db: Session = Depends(get_db),
@@ -29,7 +30,7 @@ async def create_plant(plant_in: PlantCreate,
 
 
 @plant_router.get('/{plant_id}', status_code=status.HTTP_200_OK, response_model=PlantResponse)
-async def fetch_plant(plant_id: int,
+async def read_plant(plant_id: int,
                       db: Session = Depends(get_db),
                       current_api_user: ApiUser = Depends(get_current_user)):
     plant = plant_crud.get(db=db, obj_id=plant_id)
@@ -64,6 +65,16 @@ async def read_plant_list(skip: int = 0, limit: int = 10,
         return plant_crud.get_multi(db=db, skip=skip, limit=limit)
 
 
+#  USE SPECIFIC ENDPOINTS
+@plant_router.get('/unwatered', status_code=status.HTTP_200_OK, response_model=List[PlantResponse])
+async def read_unwatered_plants(skip: int = 0, limit: int = 10,
+                                db: Session = Depends(get_db),
+                                current_api_user: ApiUser = Depends(get_current_user)):
+    if current_api_user.auth_level >= 1:
+        return plant_crud.read_unwatered(db=db, skip=skip, limit=limit)
+
+
+#  MISC
 @plant_router.post("/log")
 async def create_plant_log(form_data: PlantLogCreate,
                            db: Session = Depends(get_db),
