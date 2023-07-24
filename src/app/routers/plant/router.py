@@ -29,10 +29,19 @@ async def create_plant(plant_in: PlantCreate,
     return plant.__dict__
 
 
+@plant_router.get('/unwatered', status_code=status.HTTP_200_OK, response_model=List[PlantResponse])
+async def read_unwatered_plants(skip: int = 0, limit: int = 10,
+                                db: Session = Depends(get_db),
+                                current_api_user: ApiUser = Depends(get_current_user)):
+    if current_api_user.auth_level >= 1:
+        response = plant_crud.read_unwatered(db=db, skip=skip, limit=limit)
+        return plant_crud.read_unwatered(db=db, skip=skip, limit=limit)
+
+
 @plant_router.get('/{plant_id}', status_code=status.HTTP_200_OK, response_model=PlantResponse)
 async def read_plant(plant_id: int,
-                      db: Session = Depends(get_db),
-                      current_api_user: ApiUser = Depends(get_current_user)):
+                     db: Session = Depends(get_db),
+                     current_api_user: ApiUser = Depends(get_current_user)):
     plant = plant_crud.get(db=db, obj_id=plant_id)
     if plant is None:
         raise HTTPException(status_code=404, detail="Plant not found.")
@@ -63,15 +72,6 @@ async def read_plant_list(skip: int = 0, limit: int = 10,
                           current_api_user: ApiUser = Depends(get_current_user)):
     if current_api_user.auth_level >= 1:
         return plant_crud.get_multi(db=db, skip=skip, limit=limit)
-
-
-#  USE SPECIFIC ENDPOINTS
-@plant_router.get('/unwatered', status_code=status.HTTP_200_OK, response_model=List[PlantResponse])
-async def read_unwatered_plants(skip: int = 0, limit: int = 10,
-                                db: Session = Depends(get_db),
-                                current_api_user: ApiUser = Depends(get_current_user)):
-    if current_api_user.auth_level >= 1:
-        return plant_crud.read_unwatered(db=db, skip=skip, limit=limit)
 
 
 #  MISC

@@ -29,7 +29,7 @@ class Plant(Base):
     def last_watering(self) -> DateTime | None:
         if not self.waterings:
             return None
-        return sorted([watering_time.timestamp for watering_time in self.waterings])[0]
+        return sorted([watering_time.timestamp for watering_time in self.waterings], reverse=True)[0]
 
     @validates('name')
     def validate_name(self, key, value: str):
@@ -39,8 +39,8 @@ class Plant(Base):
 
 
 class PlantLogs(Base):
-    """Table for storing plant logs from a microcontroller in the future
-    needs plant_id foreign key"""
+    """Table for storing plant logs from a microcontroller in the future.
+    Needs plant_id foreign key"""
     __tablename__ = "plant_logs"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
