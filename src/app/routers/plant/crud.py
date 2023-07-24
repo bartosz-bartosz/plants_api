@@ -24,7 +24,11 @@ class CRUDPlant(CRUDBase[Plant, PlantCreate, PlantUpdate]):
         return db.execute(query).scalars().all()
 
     def read_unwatered(self, db: Session, *, skip: int = 0, limit: int = 10) -> List[Plant]:
-        pass
+        plants = super().get_multi(db=db, skip=skip, limit=limit)
+        for plant in plants:
+            plant.needs_water = plant.last_watering <= datetime.now() - timedelta(days=plant.watering_frequency) if plant.last_watering is not None else True
+
+        return plants
 
 
 plant_crud = CRUDPlant(Plant)

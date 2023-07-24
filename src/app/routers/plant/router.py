@@ -10,8 +10,7 @@ from app.routers.auth.schemas import ApiUser
 
 from app.routers.plant import models as m
 from app.routers.plant.crud import plant_crud
-from app.routers.plant.schemas import PlantBase, PlantCreate, PlantUpdate, PlantLogCreate, PlantResponse
-
+from app.routers.plant.schemas import PlantBase, PlantCreate, PlantUpdate, PlantLogCreate, PlantResponse, PlantResponseWater
 
 plant_router = APIRouter(
     prefix="/plant",
@@ -29,7 +28,7 @@ async def create_plant(plant_in: PlantCreate,
     return plant.__dict__
 
 
-@plant_router.get('/unwatered', status_code=status.HTTP_200_OK, response_model=List[PlantResponse])
+@plant_router.get('/unwatered', status_code=status.HTTP_200_OK, response_model=List[PlantResponseWater])
 async def read_unwatered_plants(skip: int = 0, limit: int = 10,
                                 db: Session = Depends(get_db),
                                 current_api_user: ApiUser = Depends(get_current_user)):

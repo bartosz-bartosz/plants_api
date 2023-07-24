@@ -1,6 +1,6 @@
 from typing import Optional, List
 from datetime import datetime
-from pydantic import BaseModel, validator, root_validator
+from pydantic import BaseModel, validator
 
 from app.routers.watering.models import Watering
 
@@ -68,3 +68,7 @@ class PlantResponse(PlantDB):
     species: Optional[str]
     watering_frequency: Optional[int]
     last_watering: Optional[datetime]
+
+
+class PlantResponseWater(PlantResponse):
+    needs_water: Optional[bool]
