@@ -16,12 +16,19 @@ app = FastAPI()
 
 origins = ['http://localhost:5173',
            'http://localhost',
-           'http://localhost:3000']
+           'http://localhost:3000',
+           'http://localhost:8000',
+           'http://localhost:8080']
+
 app.add_middleware(CORSMiddleware,
-                   allow_origins=origins,
+                   allow_origins=['http://localhost:5173',
+                                  'http://localhost',
+                                  'http://localhost:3000',
+                                  'http://localhost:8000',
+                                  'http://localhost:8080'],
                    allow_credentials=True,
                    allow_methods=['*'],
-                   allow_headers=['*', 'Access-Control-Allow-Origin'])
+                   allow_headers=['*'])
 
 app.include_router(plant_router)
 app.include_router(watering_router)
@@ -35,7 +42,6 @@ def read_root():
 @app.post("/token", response_model=sc.Token)
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(),
                                  db: Session = Depends(get_db)):
-   
     user = authenticate_user(db, form_data.username, form_data.password)
     if not user:
         raise HTTPException(
@@ -48,7 +54,7 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
     access_token = create_access_token(
         data={"sub": user.username}, expires_delta=access_token_expires
     )
-    
+
     return {"access_token": access_token, "token_type": "bearer"}
 
 
@@ -70,5 +76,5 @@ async def create_api_user(form_data: sc.ApiUserSignup, db: Session = Depends(get
         db.add(new_api_user)
         db.commit()
         db.refresh(new_api_user)
-        
+
         return new_api_user
