@@ -15,10 +15,7 @@ from app.routers.auth import models as m, schemas as sc
 app = FastAPI()
 
 origins = ['http://localhost:5173',
-           'http://localhost',
-           'http://localhost:3000',
-           'http://localhost:8000',
-           'http://localhost:8080']
+           'https://plants.hesitant.dev']
 
 app.add_middleware(CORSMiddleware,
                    allow_origins=['*'],

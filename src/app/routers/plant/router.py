@@ -37,6 +37,13 @@ async def read_unwatered_plants(skip: int = 0, limit: int = 10,
         return plant_crud.read_unwatered(db=db, skip=skip, limit=limit)
 
 
+@plant_router.get('/count', status_code=status.HTTP_200_OK)
+async def read_plants_count(db: Session = Depends(get_db),
+                            current_api_user: ApiUser = Depends(get_current_user)):
+    if current_api_user.auth_level >= 1:
+        return {'count': plant_crud.get_rows_count(db)}
+
+
 @plant_router.get('/{plant_id}', status_code=status.HTTP_200_OK, response_model=PlantResponse)
 async def read_plant(plant_id: int,
                      db: Session = Depends(get_db),
@@ -71,6 +78,8 @@ async def read_plant_list(skip: int = 0, limit: int = 10,
                           current_api_user: ApiUser = Depends(get_current_user)):
     if current_api_user.auth_level >= 1:
         return plant_crud.get_multi(db=db, skip=skip, limit=limit)
+
+
 
 
 #  MISC
