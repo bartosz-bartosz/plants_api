@@ -17,7 +17,8 @@ class ApiUser(BaseModel):
     auth_level: Union[int, None] = None
 
 
-class ApiUserSignup(ApiUser):
+class ApiUserSignup(BaseModel):
+    username: Union[str, None] = None
     password: Union[str, None] = None
 
 

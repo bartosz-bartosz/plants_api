@@ -70,4 +70,4 @@ async def create_api_user(form_data: sc.ApiUserSignup, db: Session = Depends(get
         db.commit()
         db.refresh(new_api_user)
 
-        return new_api_user
+        return new_api_user.username
