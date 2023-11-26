@@ -4,7 +4,7 @@ from typing import List
 from sqlalchemy import select, func, text, and_, or_
 from sqlalchemy.orm import Session, selectinload
 
-from app.crud_base import CRUDBase
+from app.crud_base import CRUDBase, ModelType
 from app.routers.plant.models import Plant
 from app.routers.plant.schemas import PlantCreate, PlantUpdate
 
@@ -29,6 +29,12 @@ class CRUDPlant(CRUDBase[Plant, PlantCreate, PlantUpdate]):
             plant.needs_water = plant.last_watering <= datetime.now() - timedelta(days=plant.watering_frequency) if plant.last_watering is not None else True
 
         return plants
+
+    def get_multi(self, db: Session, *, skip: int = 0, limit: int = 100, **kwargs) -> List[ModelType]:
+        if kwargs.get('user_id'):
+            query = select(self.model).offset(skip).limit(limit).where(self.model.user_id == kwargs['user_id'])
+            return db.execute(query).scalars().all()
+        return super().get_multi(db, skip=skip, limit=limit)
 
 
 plant_crud = CRUDPlant(Plant)
