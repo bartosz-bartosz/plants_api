@@ -67,9 +67,8 @@ async def update_plant(plant_id: int, update_data: PlantUpdate,
 async def delete_plant(plant_id: int,
                        db: Session = Depends(get_db),
                        current_api_user: ApiUser = Depends(get_current_user)):
-    if current_api_user.auth_level <= 1:
-        raise
-    return plant_crud.delete(db=db, obj_id=plant_id)
+    if current_api_user.auth_level >= 1:
+        return plant_crud.delete(db=db, obj_id=plant_id)
 
 
 @plant_router.get('', status_code=status.HTTP_200_OK, response_model=List[PlantResponse])

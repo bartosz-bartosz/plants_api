@@ -14,6 +14,12 @@ class WateringCreate(WateringBase):
     timestamp: Optional[datetime]
     fertilizer: bool = Field(default=False)
 
+    class Config:
+        orm_mode = True
+        json_encoders = {
+            bool: lambda v: int(v)
+        }
+
     @validator('plant_id')
     def validate_plant_id(cls, v):
         assert v > 0

@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 from datetime import datetime
 
-from sqlalchemy import Integer, ForeignKey, DateTime
+from sqlalchemy import Integer, ForeignKey, DateTime, func
 from sqlalchemy.orm import Mapped, mapped_column, validates, relationship
 
 from app.db import Base
@@ -16,7 +16,7 @@ class Watering(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     plant_id: Mapped[int] = mapped_column(Integer, ForeignKey("plants.id"))
-    timestamp = mapped_column(DateTime, nullable=False)
+    timestamp = mapped_column(DateTime, nullable=False, server_default=func.now())
     fertilizer: Mapped[bool] = mapped_column(Integer)
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey("api_users.id"))
 

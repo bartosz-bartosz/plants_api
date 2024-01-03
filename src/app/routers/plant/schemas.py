@@ -1,5 +1,5 @@
 from typing import Optional, List
-from datetime import datetime
+from datetime import datetime, date
 from pydantic import BaseModel, validator
 
 from app.routers.watering.models import Watering
@@ -12,7 +12,7 @@ class PlantBase(BaseModel):
 
 class PlantCreate(PlantBase):
     user_id: int
-    acquire_time: Optional[datetime]
+    acquire_time: Optional[datetime | date]
     is_alive: Optional[int | bool] = 1
     species: Optional[str]
     watering_frequency: Optional[int]
@@ -20,7 +20,8 @@ class PlantCreate(PlantBase):
     class Config:
         orm_mode = True
         json_encoders = {
-            datetime: lambda v: v.strftime('%Y-%m-%d %H:%M:%S')
+            datetime: lambda v: v.strftime('%Y-%m-%d %H:%M:%S'),
+            date: lambda v: v.strftime('%Y-%m-%d')
         }
 
     @validator('name')
@@ -35,7 +36,8 @@ class PlantCreate(PlantBase):
 
     @validator('species')
     def species_length(cls, v):
-        assert 2 <= len(v) <= 200, 'must be between 2 and 200 characters'
+        if v:
+            assert 2 <= len(v) <= 200, 'must be between 2 and 200 characters'
         return v
 
     @validator('watering_frequency')
