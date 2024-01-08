@@ -36,7 +36,7 @@ class CRUDPlant(CRUDBase[Plant, PlantCreate, PlantUpdate]):
             result = db.execute(query).scalars().all()
             for plant in result:
                 plant.next_watering = plant.last_watering + timedelta(days=plant.watering_frequency) if plant.last_watering else None
-                plant.days_left = (plant.next_watering - plant.last_watering).days if plant.last_watering else None
+                plant.days_left = (plant.next_watering - datetime.now()).days if plant.last_watering else None
                 print(plant.__dict__)
             result = sorted(result, key=lambda x: x.days_left if x.days_left is not None else float('inf'))
             return result
