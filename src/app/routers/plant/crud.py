@@ -33,7 +33,13 @@ class CRUDPlant(CRUDBase[Plant, PlantCreate, PlantUpdate]):
     def get_multi(self, db: Session, *, skip: int = 0, limit: int = 100, **kwargs) -> List[ModelType]:
         if kwargs.get('user_id'):
             query = select(self.model).offset(skip).limit(limit).where(self.model.user_id == kwargs['user_id'])
-            return db.execute(query).scalars().all()
+            result = db.execute(query).scalars().all()
+            for plant in result:
+                plant.next_watering = plant.last_watering + timedelta(days=plant.watering_frequency) if plant.last_watering else None
+                plant.days_left = (plant.next_watering - plant.last_watering).days if plant.last_watering else None
+                print(plant.__dict__)
+            result = sorted(result, key=lambda x: x.days_left if x.days_left is not None else float('inf'))
+            return result
         return super().get_multi(db, skip=skip, limit=limit)
 
 

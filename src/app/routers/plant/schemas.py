@@ -70,6 +70,8 @@ class PlantResponse(PlantDB):
     species: Optional[str]
     watering_frequency: Optional[int]
     last_watering: Optional[datetime]
+    next_watering: Optional[datetime]
+    days_left: Optional[int]
 
 
 class PlantResponseWater(PlantResponse):
