@@ -10,17 +10,11 @@ class WateringBase(BaseModel):
 
 class WateringCreate(WateringBase):
     plant_id: int
-    user_id: int
     timestamp: Optional[datetime]
-    fertilizer: bool = Field(default=False)
+    fertilizer: int = Field(default=0, ge=0, le=1)
 
     @field_validator("plant_id")
     def validate_plant_id(cls, v):
-        assert v > 0
-        return v
-
-    @field_validator("user_id")
-    def validate_user_id(cls, v):
         assert v > 0
         return v
 

@@ -3,7 +3,7 @@ from datetime import datetime
 
 from sqlalchemy import Integer, ForeignKey, DateTime, func
 from sqlalchemy.orm import Mapped, mapped_column, validates, relationship
-from sqlalchemy.types import Boolean
+from sqlalchemy.types import Boolean, SmallInteger
 
 from app.db import Base
 
@@ -21,7 +21,7 @@ class Watering(Base):
     timestamp: Mapped[datetime] = mapped_column(
         DateTime, nullable=False, server_default=func.now()
     )
-    fertilizer: Mapped[bool] = mapped_column(Boolean)
+    fertilizer: Mapped[int] = mapped_column(SmallInteger)
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey("api_users.id"))
 
     # relationships
