@@ -14,7 +14,7 @@ class PlantCreate(PlantBase):
     user_id: int
     acquire_time: Optional[datetime | date]
     is_alive: Optional[int | bool] = 1
-    species: Optional[str]
+    species: Optional[str] = None
     watering_frequency: Optional[int]
 
     class Config:

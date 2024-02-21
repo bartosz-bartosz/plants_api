@@ -8,18 +8,18 @@ class Token(BaseModel):
 
 
 class TokenData(BaseModel):
-    username: Union[str, None] = None
+    username: str | None = None
 
 
 class ApiUser(BaseModel):
-    id: Union[int, None] = None
-    username: Union[str, None] = None
-    auth_level: Union[int, None] = None
+    id: int | None = None
+    username: str | None = None
+    auth_level: int | None = None
 
 
 class ApiUserSignup(BaseModel):
-    username: Union[str, None] = None
-    password: Union[str, None] = None
+    username: str | None = None
+    password: str | None = None
 
 
 # ------------------------------------- RESPONSE MODELS
