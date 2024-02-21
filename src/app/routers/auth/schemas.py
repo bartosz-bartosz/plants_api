@@ -8,18 +8,18 @@ class Token(BaseModel):
 
 
 class TokenData(BaseModel):
-    username: str | None = None
+    username: str
 
 
 class ApiUser(BaseModel):
-    id: int | None = None
-    username: str | None = None
-    auth_level: int | None = None
+    id: int
+    username: str
+    auth_level: int
 
 
 class ApiUserSignup(BaseModel):
-    username: str | None = None
-    password: str | None = None
+    username: str
+    password: str
 
 
 # ------------------------------------- RESPONSE MODELS

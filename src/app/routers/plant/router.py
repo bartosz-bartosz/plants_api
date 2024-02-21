@@ -10,86 +10,126 @@ from app.routers.auth.schemas import ApiUser
 
 from app.routers.plant import models as m
 from app.routers.plant.crud import plant_crud
-from app.routers.plant.schemas import PlantBase, PlantCreate, PlantUpdate, PlantLogCreate, PlantResponse, PlantResponseWater
-
-plant_router = APIRouter(
-    prefix="/plant",
-    tags=['plant']
+from app.routers.plant.schemas import (
+    PlantBase,
+    PlantCreate,
+    PlantUpdate,
+    PlantLogCreate,
+    PlantResponse,
+    PlantResponseWater,
 )
 
+plant_router = APIRouter(prefix="/plant", tags=["plant"])
 
-#  BASIC CRUD
-@plant_router.post('', status_code=status.HTTP_201_CREATED, response_model=PlantBase)
-async def create_plant(plant_in: PlantCreate,
-                       db: Session = Depends(get_db),
-                       user: ApiUser = Depends(get_current_user)):
-    plant_in.user_id = user.id
+
+@plant_router.post("", status_code=status.HTTP_201_CREATED, response_model=PlantBase)
+async def create_plant(
+    plant_in: PlantCreate,
+    db: Session = Depends(get_db),
+    current_api_user: ApiUser = Depends(get_current_user),
+):
+    if current_api_user.auth_level < 1:
+        return HTTPException(status_code=403, detail="Forbidden")
+    plant_in.user_id = current_api_user.id
     plant = plant_crud.create(db=db, new_obj=plant_in)
     return plant.__dict__
 
 
-@plant_router.get('/unwatered', status_code=status.HTTP_200_OK, response_model=List[PlantResponseWater])
-async def read_unwatered_plants(skip: int = 0, limit: int = 10,
-                                db: Session = Depends(get_db),
-                                current_api_user: ApiUser = Depends(get_current_user)):
-    if current_api_user.auth_level >= 1:
-        response = plant_crud.read_unwatered(db=db, skip=skip, limit=limit)
-        return plant_crud.read_unwatered(db=db, skip=skip, limit=limit)
+@plant_router.get(
+    "/unwatered",
+    status_code=status.HTTP_200_OK,
+    response_model=List[PlantResponseWater],
+)
+async def read_unwatered_plants(
+    skip: int = 0,
+    limit: int = 10,
+    db: Session = Depends(get_db),
+    current_api_user: ApiUser = Depends(get_current_user),
+):
+    if current_api_user.auth_level < 1:
+        return HTTPException(status_code=403, detail="Forbidden")
+
+    return plant_crud.read_unwatered(db=db, skip=skip, limit=limit)
 
 
-@plant_router.get('/count', status_code=status.HTTP_200_OK)
-async def read_plants_count(db: Session = Depends(get_db),
-                            current_api_user: ApiUser = Depends(get_current_user)):
-    if current_api_user.auth_level >= 1:
-        return {'count': plant_crud.get_rows_count(db)}
+@plant_router.get("/count", status_code=status.HTTP_200_OK)
+async def read_plants_count(
+    db: Session = Depends(get_db), current_api_user: ApiUser = Depends(get_current_user)
+):
+    if current_api_user.auth_level < 1:
+        return HTTPException(status_code=403, detail="Forbidden")
+    return {"count": plant_crud.get_rows_count(db)}
 
 
-@plant_router.get('/{plant_id}', status_code=status.HTTP_200_OK, response_model=PlantResponse)
-async def read_plant(plant_id: int,
-                     db: Session = Depends(get_db),
-                     current_api_user: ApiUser = Depends(get_current_user)):
+@plant_router.get(
+    "/{plant_id}", status_code=status.HTTP_200_OK, response_model=PlantResponse
+)
+async def read_plant(
+    plant_id: int,
+    db: Session = Depends(get_db),
+    current_api_user: ApiUser = Depends(get_current_user),
+):
+    if current_api_user.auth_level < 1:
+        return HTTPException(status_code=403, detail="Forbidden")
+
     plant = plant_crud.get(db=db, obj_id=plant_id)
     if plant is None:
         raise HTTPException(status_code=404, detail="Plant not found.")
     return plant_crud.get(db=db, obj_id=plant_id)
 
 
-@plant_router.put('/{plant_id}', response_model=PlantResponse)
-async def update_plant(plant_id: int, update_data: PlantUpdate,
-                       db: Session = Depends(get_db),
-                       current_api_user: ApiUser = Depends(get_current_user)):
+@plant_router.put("/{plant_id}", response_model=PlantResponse)
+async def update_plant(
+    plant_id: int,
+    update_data: PlantUpdate,
+    db: Session = Depends(get_db),
+    current_api_user: ApiUser = Depends(get_current_user),
+):
     plant_obj = plant_crud.get(db, plant_id)
     plant_crud.update(db=db, db_obj=plant_obj, obj_in=update_data)
     return plant_crud.get(db=db, obj_id=plant_id)
 
 
-@plant_router.delete('/{plant_id}')
-async def delete_plant(plant_id: int,
-                       db: Session = Depends(get_db),
-                       current_api_user: ApiUser = Depends(get_current_user)):
+@plant_router.delete("/{plant_id}")
+async def delete_plant(
+    plant_id: int,
+    db: Session = Depends(get_db),
+    current_api_user: ApiUser = Depends(get_current_user),
+):
     if current_api_user.auth_level >= 1:
         return plant_crud.delete(db=db, obj_id=plant_id)
 
 
-@plant_router.get('', status_code=status.HTTP_200_OK, response_model=List[PlantResponse])
-async def read_plant_list(skip: int = 0, limit: int = 10,
-                          db: Session = Depends(get_db),
-                          current_api_user: ApiUser = Depends(get_current_user)):
+@plant_router.get(
+    "", status_code=status.HTTP_200_OK, response_model=List[PlantResponse]
+)
+async def read_plant_list(
+    skip: int = 0,
+    limit: int = 10,
+    db: Session = Depends(get_db),
+    current_api_user: ApiUser = Depends(get_current_user),
+):
     if current_api_user.auth_level >= 1:
-        return plant_crud.get_multi(db=db, user_id=current_api_user.id, skip=skip, limit=limit)
+        return plant_crud.get_multi(
+            db=db, user_id=current_api_user.id, skip=skip, limit=limit
+        )
 
 
 #  MISC
 @plant_router.post("/log")
-async def create_plant_log(form_data: PlantLogCreate,
-                           db: Session = Depends(get_db),
-                           current_api_user: ApiUser = Depends(get_current_user)):
-    """ This endpoint is just a placeholder, in the future 'logs' endpoints should have their own directory """
+async def create_plant_log(
+    form_data: PlantLogCreate,
+    db: Session = Depends(get_db),
+    current_api_user: ApiUser = Depends(get_current_user),
+):
+    """This endpoint is just a placeholder, in the future 'logs' endpoints should have their own directory"""
     if current_api_user.auth_level >= 1:
         timestamp = datetime.fromtimestamp(form_data.timestamp)
-        plant_log = m.PlantLogs(timestamp=timestamp,
-                                plant_name=form_data.plant_name,
-                                moisture=form_data.moisture)
+        plant_log = m.PlantLogs(
+            timestamp=timestamp,
+            plant_name=form_data.plant_name,
+            moisture=form_data.moisture,
+        )
 
         db.add(plant_log)
         db.commit()
