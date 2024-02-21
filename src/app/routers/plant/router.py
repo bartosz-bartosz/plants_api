@@ -85,6 +85,9 @@ async def update_plant(
     db: Session = Depends(get_db),
     current_api_user: ApiUser = Depends(get_current_user),
 ):
+    if current_api_user.auth_level < 1:
+        return HTTPException(status_code=403, detail="Forbidden")
+
     plant_obj = plant_crud.get(db, plant_id)
     plant_crud.update(db=db, db_obj=plant_obj, obj_in=update_data)
     return plant_crud.get(db=db, obj_id=plant_id)
@@ -96,8 +99,9 @@ async def delete_plant(
     db: Session = Depends(get_db),
     current_api_user: ApiUser = Depends(get_current_user),
 ):
-    if current_api_user.auth_level >= 1:
-        return plant_crud.delete(db=db, obj_id=plant_id)
+    if current_api_user.auth_level < 1:
+        return HTTPException(status_code=403, detail="Forbidden")
+    return plant_crud.delete(db=db, obj_id=plant_id)
 
 
 @plant_router.get(

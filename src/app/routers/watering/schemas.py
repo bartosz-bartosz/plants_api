@@ -19,6 +19,10 @@ class WateringCreate(WateringBase):
         return v
 
 
+class WateringCreateDB(WateringCreate):
+    user_id: int
+
+
 class WateringUpdate(WateringBase):
     ...
 

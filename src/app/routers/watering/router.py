@@ -6,18 +6,23 @@ from app.routers.auth.auth import get_current_user
 from app.routers.auth.schemas import ApiUser
 
 from app.routers.watering.crud import watering_crud
-from app.routers.watering.schemas import WateringBase, WateringCreate, WateringUpdate
+from app.routers.watering.schemas import (
+    WateringBase,
+    WateringCreate,
+    WateringUpdate,
+    WateringCreateDB,
+)
 
 watering_router = APIRouter(prefix="/watering", tags=["watering"])
 
 
 @watering_router.post("", status_code=status.HTTP_200_OK, response_model=WateringBase)
 async def create_watering(
-    watering_in: WateringCreate,
+    watering_create: WateringCreate,
     db: Session = Depends(get_db),
     user: ApiUser = Depends(get_current_user),
 ):
-    watering_in.user_id = user.id
+    watering_in = WateringCreateDB(**watering_create.model_dump(), user_id=user.id)
     watering = watering_crud.create(db=db, new_obj=watering_in)
     return watering.__dict__
 
