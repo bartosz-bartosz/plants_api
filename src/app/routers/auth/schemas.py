@@ -23,8 +23,7 @@ class ApiUserSignup(BaseModel):
 
 
 # ------------------------------------- RESPONSE MODELS
-class ApiUserSafeResponse(ApiUser):
+class ApiUserSafeResponse(BaseModel):
     username: str
     auth_level: int
     id: int
-
