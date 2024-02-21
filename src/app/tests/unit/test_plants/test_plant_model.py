@@ -15,15 +15,7 @@ valid_plant_data = {
 
 
 def test_valid_plant():
-    # Correct model
-    assert Plant(
-        user_id=1,
-        name="plant name",
-        acquire_time=datetime.now,
-        is_alive=1,
-        species="plant species",
-        watering_frequency=7,
-    )
+    assert Plant(**valid_plant_data)
 
 
 @pytest.mark.parametrize(
