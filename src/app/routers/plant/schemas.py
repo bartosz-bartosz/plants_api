@@ -1,12 +1,12 @@
 from typing import Optional, List
 from datetime import datetime, date
-from pydantic import BaseModel, field_validator
-
-from app.routers.watering.models import Watering
+from pydantic import BaseModel, ConfigDict, field_validator
 
 
 # ----------------------------------- FORM SCHEMAS
 class PlantBase(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     name: str
 
 
@@ -16,13 +16,6 @@ class PlantCreate(PlantBase):
     is_alive: Optional[int | bool] = 1
     species: Optional[str] = None
     watering_frequency: Optional[int]
-
-    class Config:
-        from_attributes = True
-        json_encoders = {
-            datetime: lambda v: v.strftime("%Y-%m-%d %H:%M:%S"),
-            date: lambda v: v.strftime("%Y-%m-%d"),
-        }
 
     @field_validator("name")
     def username_length(cls, v):
@@ -47,7 +40,7 @@ class PlantCreate(PlantBase):
 
 
 class PlantUpdate(PlantCreate):
-    name: Optional[str]
+    pass
 
 
 class PlantLogCreate(BaseModel):
@@ -60,9 +53,6 @@ class PlantLogCreate(BaseModel):
 class PlantDB(PlantBase):
     id: int
     user_id: int
-
-    class Config:
-        from_attributes = True
 
 
 # ----------------------------------- RESPONSE MODELS
