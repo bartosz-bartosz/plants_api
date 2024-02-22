@@ -23,18 +23,18 @@ from app.routers.plant.schemas import (
 plant_router = APIRouter(prefix="/plant", tags=["plant"])
 
 
-@plant_router.post("", status_code=status.HTTP_201_CREATED, response_model=PlantBase)
+@plant_router.post("", status_code=status.HTTP_201_CREATED, response_model=PlantCreate)
 async def create_plant(
     plant_create: PlantCreate,
     db: Session = Depends(get_db),
     user: ApiUser = Depends(get_current_user),
 ):
+    """Creates a new plant in the database"""
     if user.auth_level < 1:
         return HTTPException(status_code=403, detail="Forbidden")
 
     plant_in = PlantCreateDB(**plant_create.model_dump(), user_id=user.id)
-    plant = plant_crud.create(db=db, new_obj=plant_in)
-    return plant.__dict__
+    return plant_crud.create(db=db, new_obj=plant_in)
 
 
 @plant_router.get(
@@ -48,6 +48,7 @@ async def read_unwatered_plants(
     db: Session = Depends(get_db),
     current_api_user: ApiUser = Depends(get_current_user),
 ):
+    """Reads only these user plants that should have already been watered by now."""
     if current_api_user.auth_level < 1:
         return HTTPException(status_code=403, detail="Forbidden")
 
@@ -58,6 +59,7 @@ async def read_unwatered_plants(
 async def read_plants_count(
     db: Session = Depends(get_db), current_api_user: ApiUser = Depends(get_current_user)
 ):
+    """Reads the count of all user plants in the database"""
     if current_api_user.auth_level < 1:
         return HTTPException(status_code=403, detail="Forbidden")
     return {"count": plant_crud.get_rows_count(db)}
@@ -71,6 +73,7 @@ async def read_plant(
     db: Session = Depends(get_db),
     current_api_user: ApiUser = Depends(get_current_user),
 ):
+    """Reads a single plant from the database by ID"""
     if current_api_user.auth_level < 1:
         return HTTPException(status_code=403, detail="Forbidden")
 
@@ -87,6 +90,7 @@ async def update_plant(
     db: Session = Depends(get_db),
     current_api_user: ApiUser = Depends(get_current_user),
 ):
+    """Updates a plant in the database by ID"""
     if current_api_user.auth_level < 1:
         return HTTPException(status_code=403, detail="Forbidden")
 
@@ -101,6 +105,7 @@ async def delete_plant(
     db: Session = Depends(get_db),
     current_api_user: ApiUser = Depends(get_current_user),
 ):
+    """Deletes a plant from the database by ID"""
     if current_api_user.auth_level < 1:
         return HTTPException(status_code=403, detail="Forbidden")
     return plant_crud.delete(db=db, obj_id=plant_id)
@@ -115,10 +120,13 @@ async def read_plant_list(
     db: Session = Depends(get_db),
     current_api_user: ApiUser = Depends(get_current_user),
 ):
-    if current_api_user.auth_level >= 1:
-        return plant_crud.get_multi(
-            db=db, user_id=current_api_user.id, skip=skip, limit=limit
-        )
+    """Reads all user plants from the database"""
+    if current_api_user.auth_level < 1:
+        return HTTPException(status_code=403, detail="Forbidden")
+
+    return plant_crud.get_multi(
+        db=db, user_id=current_api_user.id, skip=skip, limit=limit
+    )
 
 
 #  MISC
