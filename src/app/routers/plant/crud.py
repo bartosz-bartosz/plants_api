@@ -12,10 +12,11 @@ from app.routers.plant.schemas import PlantCreate, PlantUpdate
 # noinspection PyTypeChecker
 class CRUDPlant(CRUDBase[Plant, PlantCreate, PlantUpdate]):
     def read_unwatered(
-        self, db: Session, *, skip: int = 0, limit: int = 10
+        self, db: Session, *, skip: int = 0, limit: int = 10, user_id: int
     ) -> List[Plant]:
-        plants = super().get_multi(db=db, skip=skip, limit=limit)
-
+        filters = [self.model.user_id == user_id, 
+                   self.model.next_watering < datetime.now()]
+        plants = super().get_multi(db=db, skip=skip, limit=limit, filters=filters)
         return plants
 
     def get_multi(

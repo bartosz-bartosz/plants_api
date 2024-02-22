@@ -32,121 +32,94 @@ async def create_plant(
     """Creates a new plant in the database"""
     if user.auth_level < 1:
         return HTTPException(status_code=403, detail="Forbidden")
-
     plant_in = PlantCreateDB(**plant_create.model_dump(), user_id=user.id)
     return plant_crud.create(db=db, new_obj=plant_in)
 
 
-@plant_router.get(
-    "/unwatered",
-    status_code=status.HTTP_200_OK,
-    response_model=List[PlantResponseWater],
-)
-async def read_unwatered_plants(
-    skip: int = 0,
-    limit: int = 10,
-    db: Session = Depends(get_db),
-    current_api_user: ApiUser = Depends(get_current_user),
-):
+@plant_router.get("/unwatered",
+                  status_code=status.HTTP_200_OK,
+                  response_model=List[PlantResponseWater])
+async def read_unwatered_plants(skip: int = 0,
+                                db: Session = Depends(get_db),
+                                current_api_user: ApiUser = Depends(get_current_user)):
     """Reads only these user plants that should have already been watered by now."""
     if current_api_user.auth_level < 1:
         return HTTPException(status_code=403, detail="Forbidden")
-
     return plant_crud.read_unwatered(db=db, skip=skip, limit=limit)
 
 
 @plant_router.get("/count", status_code=status.HTTP_200_OK)
-async def read_plants_count(
-    db: Session = Depends(get_db), current_api_user: ApiUser = Depends(get_current_user)
-):
+async def read_plants_count(db: Session = Depends(get_db), 
+                            current_api_user: ApiUser = Depends(get_current_user)):
     """Reads the count of all user plants in the database"""
     if current_api_user.auth_level < 1:
         return HTTPException(status_code=403, detail="Forbidden")
     return {"count": plant_crud.get_rows_count(db)}
 
 
-@plant_router.get(
-    "/{plant_id}", status_code=status.HTTP_200_OK, response_model=PlantResponse
-)
-async def read_plant(
-    plant_id: int,
-    db: Session = Depends(get_db),
-    current_api_user: ApiUser = Depends(get_current_user),
-):
+@plant_router.get("/{plant_id}",
+                  status_code=status.HTTP_200_OK,
+                  response_model=PlantResponse)
+async def read_plant(plant_id: int,
+                     db: Session = Depends(get_db),
+                     current_api_user: ApiUser = Depends(get_current_user)):
     """Reads a single plant from the database by ID"""
     if current_api_user.auth_level < 1:
         return HTTPException(status_code=403, detail="Forbidden")
-
     plant = plant_crud.get(db=db, obj_id=plant_id)
     if plant is None:
         raise HTTPException(status_code=404, detail="Plant not found.")
-    return plant_crud.get(db=db, obj_id=plant_id)
+    return plant
 
 
 @plant_router.put("/{plant_id}", response_model=PlantResponse)
-async def update_plant(
-    plant_id: int,
-    update_data: PlantUpdate,
-    db: Session = Depends(get_db),
-    current_api_user: ApiUser = Depends(get_current_user),
-):
+async def update_plant(plant_id: int,
+                       update_data: PlantUpdate,
+                       db: Session = Depends(get_db),
+                       current_api_user: ApiUser = Depends(get_current_user)):
     """Updates a plant in the database by ID"""
     if current_api_user.auth_level < 1:
         return HTTPException(status_code=403, detail="Forbidden")
-
     plant_obj = plant_crud.get(db, plant_id)
     plant_crud.update(db=db, db_obj=plant_obj, obj_in=update_data)
     return plant_crud.get(db=db, obj_id=plant_id)
 
 
 @plant_router.delete("/{plant_id}")
-async def delete_plant(
-    plant_id: int,
-    db: Session = Depends(get_db),
-    current_api_user: ApiUser = Depends(get_current_user),
-):
+async def delete_plant(plant_id: int,
+                       db: Session = Depends(get_db),
+                       current_api_user: ApiUser = Depends(get_current_user)):
     """Deletes a plant from the database by ID"""
     if current_api_user.auth_level < 1:
         return HTTPException(status_code=403, detail="Forbidden")
     return plant_crud.delete(db=db, obj_id=plant_id)
 
 
-@plant_router.get(
-    "", status_code=status.HTTP_200_OK, response_model=List[PlantResponse]
+@plant_router.get("",
+                  status_code=status.HTTP_200_OK,
+                  response_model=List[PlantResponse]
 )
-async def read_plant_list(
-    skip: int = 0,
-    limit: int = 10,
-    db: Session = Depends(get_db),
-    current_api_user: ApiUser = Depends(get_current_user),
-):
+async def read_plant_list(skip: int = 0, limit: int = 10,
+                          db: Session = Depends(get_db),
+                          current_api_user: ApiUser = Depends(get_current_user)):
     """Reads all user plants from the database"""
     if current_api_user.auth_level < 1:
         return HTTPException(status_code=403, detail="Forbidden")
-
-    return plant_crud.get_multi(
-        db=db, user_id=current_api_user.id, skip=skip, limit=limit
-    )
+    return plant_crud.get_multi(db=db, user_id=current_api_user.id, skip=skip, limit=limit)
 
 
 #  MISC
 @plant_router.post("/log")
-async def create_plant_log(
-    form_data: PlantLogCreate,
-    db: Session = Depends(get_db),
-    current_api_user: ApiUser = Depends(get_current_user),
-):
+async def create_plant_log(form_data: PlantLogCreate,
+                           db: Session = Depends(get_db),
+                           current_api_user: ApiUser = Depends(get_current_user)):
     """This endpoint is just a placeholder, in the future 'logs' endpoints should have their own directory"""
     if current_api_user.auth_level >= 1:
         timestamp = datetime.fromtimestamp(form_data.timestamp)
-        plant_log = m.PlantLogs(
-            timestamp=timestamp,
-            plant_name=form_data.plant_name,
-            moisture=form_data.moisture,
-        )
-
+        plant_log = m.PlantLogs(timestamp=timestamp,
+                                plant_name=form_data.plant_name,
+                                moisture=form_data.moisture)
         db.add(plant_log)
         db.commit()
         db.refresh(plant_log)
-
         return plant_log

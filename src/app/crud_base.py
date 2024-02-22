@@ -28,10 +28,17 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         query = select(self.model).where(self.model.id == obj_id)
         return db.execute(query).scalar_one_or_none()
 
-    def get_multi(
-        self, db: Session, *, skip: int = 0, limit: int = 100, **kwargs
-    ) -> List[ModelType]:
-        query = select(self.model).offset(skip).limit(limit)
+    def get_multi(self,
+                  db: Session,
+                  *,
+                  skip: int = 0,
+                  limit: int = 100,
+                  filters: list | None = None,
+                  **kwargs) -> List[ModelType]:
+        query = select(self.model)
+        if filters:
+            query = query.where(*filters)
+        query = query.offset(skip).limit(limit)
         return db.execute(query).scalars().all()
 
     def create(self, db: Session, *, new_obj: CreateSchemaType) -> ModelType:
@@ -42,13 +49,11 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         db.refresh(db_obj)
         return db_obj
 
-    def update(
-        self,
-        db: Session,
-        *,
-        db_obj: ModelType,
-        obj_in: UpdateSchemaType | Dict[str, Any],
-    ) -> ModelType:
+    def update(self,
+               db: Session,
+               *,
+               db_obj: ModelType,
+               obj_in: UpdateSchemaType | Dict[str, Any]) -> ModelType:
         obj_data = jsonable_encoder(db_obj)
         if isinstance(obj_in, dict):
             update_data = obj_in
