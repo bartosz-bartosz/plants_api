@@ -15,6 +15,7 @@ from app.routers.plant.schemas import (
     PlantCreate,
     PlantUpdate,
     PlantLogCreate,
+    PlantCreateDB,
     PlantResponse,
     PlantResponseWater,
 )
@@ -24,13 +25,14 @@ plant_router = APIRouter(prefix="/plant", tags=["plant"])
 
 @plant_router.post("", status_code=status.HTTP_201_CREATED, response_model=PlantBase)
 async def create_plant(
-    plant_in: PlantCreate,
+    plant_create: PlantCreate,
     db: Session = Depends(get_db),
-    current_api_user: ApiUser = Depends(get_current_user),
+    user: ApiUser = Depends(get_current_user),
 ):
-    if current_api_user.auth_level < 1:
+    if user.auth_level < 1:
         return HTTPException(status_code=403, detail="Forbidden")
-    plant_in.user_id = current_api_user.id
+
+    plant_in = PlantCreateDB(**plant_create.model_dump(), user_id=user.id)
     plant = plant_crud.create(db=db, new_obj=plant_in)
     return plant.__dict__
 

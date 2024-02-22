@@ -15,13 +15,6 @@ class CRUDPlant(CRUDBase[Plant, PlantCreate, PlantUpdate]):
         self, db: Session, *, skip: int = 0, limit: int = 10
     ) -> List[Plant]:
         plants = super().get_multi(db=db, skip=skip, limit=limit)
-        for plant in plants:
-            plant.needs_water = (
-                plant.last_watering
-                <= datetime.now() - timedelta(days=plant.watering_frequency)
-                if plant.last_watering is not None
-                else True
-            )
 
         return plants
 

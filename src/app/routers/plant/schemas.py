@@ -38,6 +38,10 @@ class PlantCreate(PlantBase):
         return v
 
 
+class PlantCreateDB(PlantCreate):
+    user_id: int
+
+
 class PlantUpdate(PlantCreate):
     pass
 
