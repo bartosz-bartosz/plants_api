@@ -1,6 +1,6 @@
 from typing import Optional, List
-from datetime import datetime, date
-from pydantic import BaseModel, ConfigDict, field_validator
+from datetime import datetime, date, timedelta
+from pydantic import BaseModel, ConfigDict, field_validator, computed_field
 
 
 # ----------------------------------- FORM SCHEMAS
@@ -59,9 +59,26 @@ class PlantResponse(PlantDB):
     species: Optional[str]
     watering_frequency: Optional[int]
     last_watering: Optional[datetime]
-    next_watering: Optional[datetime]
-    days_left: Optional[int]
+
+    @computed_field
+    @property
+    def next_watering(self) -> datetime | None:
+        if self.last_watering and self.watering_frequency:
+            return self.last_watering + timedelta(days=self.watering_frequency)
+        return None
+
+    @computed_field
+    @property
+    def days_left(self) -> int | None:
+        if self.next_watering:
+            return (self.next_watering - datetime.now()).days
+        return None
 
 
 class PlantResponseWater(PlantResponse):
-    needs_water: Optional[bool]
+    @computed_field
+    @property
+    def needs_water(self) -> bool | None:
+        if self.next_watering:
+            return self.next_watering < datetime.now()
+        return None
