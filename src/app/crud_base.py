@@ -25,7 +25,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         self.model = model
 
     def get(self, db: Session, obj_id: Any) -> Optional[ModelType]:
-        query = select(self.model).where(self.model.id == obj_id)
+        query = select(self.model).where(self.model.id == obj_id) # type: ignore
         return db.execute(query).scalar_one_or_none()
 
     def get_multi(self,
@@ -33,13 +33,12 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
                   *,
                   skip: int = 0,
                   limit: int = 100,
-                  filters: list | None = None,
-                  **kwargs) -> List[ModelType]:
+                  filters: list | None = None) -> List[ModelType]:
         query = select(self.model)
         if filters:
             query = query.where(*filters)
         query = query.offset(skip).limit(limit)
-        return db.execute(query).scalars().all()
+        return db.execute(query).scalars().all() # pyright: ignore
 
     def create(self, db: Session, *, new_obj: CreateSchemaType) -> ModelType:
         obj_in_data = jsonable_encoder(new_obj)
@@ -53,7 +52,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
                db: Session,
                *,
                db_obj: ModelType,
-               obj_in: UpdateSchemaType | Dict[str, Any]) -> ModelType:
+               obj_in: UpdateSchemaType | Dict[str, Any]) -> ModelType: # pyright: ignore
         obj_data = jsonable_encoder(db_obj)
         if isinstance(obj_in, dict):
             update_data = obj_in
@@ -68,12 +67,12 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
             return db_obj
 
     def delete(self, db: Session, *, obj_id: int) -> ModelType:
-        query = select(self.model).where(self.model.id == obj_id)
+        query = select(self.model).where(self.model.id == obj_id) # pyright: ignore
         obj = db.execute(query).scalar_one_or_none()
         db.delete(obj)
         db.commit()
-        return obj
+        return obj # pyright: ignore
 
     def get_rows_count(self, db: Session):
-        count_query = func.count(self.model.id)
+        count_query = func.count(self.model.id) # pyright: ignore
         return db.execute(count_query).scalar()

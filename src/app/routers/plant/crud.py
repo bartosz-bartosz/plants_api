@@ -1,10 +1,8 @@
-from datetime import datetime, timedelta
 from typing import List
 
-from sqlalchemy import select, func, text, and_, or_
+from sqlalchemy import select
 from sqlalchemy.orm import Session
-from sqlalchemy.sql import func
-from app.crud_base import CRUDBase, ModelType
+from app.crud_base import CRUDBase
 from app.routers.plant.models import Plant
 from app.routers.plant.schemas import PlantCreate, PlantResponse, PlantUpdate
 from app.utils import needs_watering
