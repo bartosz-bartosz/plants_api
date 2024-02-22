@@ -33,8 +33,11 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
                   *,
                   skip: int = 0,
                   limit: int = 100,
-                  filters: list | None = None) -> List[ModelType]:
+                  filters: list | None = None,
+                  **kwargs) -> List[ModelType]:
         query = select(self.model)
+        if kwargs.get("user_id"):
+            filters = [self.model.user_id == kwargs["user_id"]] # pyright: ignore
         if filters:
             query = query.where(*filters)
         query = query.offset(skip).limit(limit)

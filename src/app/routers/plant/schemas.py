@@ -55,7 +55,6 @@ class PlantLogCreate(BaseModel):
 # ----------------------------------- DATABASE MODELS
 class PlantDB(PlantBase):
     id: int
-    user_id: int
 
 
 # ----------------------------------- RESPONSE MODELS
