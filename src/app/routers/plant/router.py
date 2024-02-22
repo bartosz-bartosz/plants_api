@@ -40,12 +40,13 @@ async def create_plant(
                   status_code=status.HTTP_200_OK,
                   response_model=List[PlantResponseWater])
 async def read_unwatered_plants(skip: int = 0,
+                                limit: int = 10,
                                 db: Session = Depends(get_db),
-                                current_api_user: ApiUser = Depends(get_current_user)):
+                                user: ApiUser = Depends(get_current_user)):
     """Reads only these user plants that should have already been watered by now."""
-    if current_api_user.auth_level < 1:
+    if user.auth_level < 1:
         return HTTPException(status_code=403, detail="Forbidden")
-    return plant_crud.read_unwatered(db=db, skip=skip, limit=limit)
+    return plant_crud.read_unwatered(db=db, skip=skip, limit=limit, user_id=user.id)
 
 
 @plant_router.get("/count", status_code=status.HTTP_200_OK)
@@ -105,7 +106,7 @@ async def read_plant_list(skip: int = 0, limit: int = 10,
     """Reads all user plants from the database"""
     if current_api_user.auth_level < 1:
         return HTTPException(status_code=403, detail="Forbidden")
-    return plant_crud.get_multi(db=db, user_id=current_api_user.id, skip=skip, limit=limit)
+    return plant_crud.get_multi(db=db, skip=skip, limit=limit, user_id=current_api_user.id)
 
 
 #  MISC

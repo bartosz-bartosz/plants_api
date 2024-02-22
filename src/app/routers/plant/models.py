@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import List, TYPE_CHECKING
 
 from sqlalchemy import Integer, String, ForeignKey, Float, DateTime
@@ -26,7 +27,7 @@ class Plant(Base):
     waterings: Mapped[List["Watering"]] = relationship("Watering", back_populates="plant")
 
     @property
-    def last_watering(self) -> DateTime | None:
+    def last_watering(self) -> datetime | None:
         if not self.waterings:
             return None
         return sorted([watering_time.timestamp for watering_time in self.waterings], reverse=True)[0]

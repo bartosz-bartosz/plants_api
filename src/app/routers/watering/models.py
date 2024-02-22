@@ -18,9 +18,9 @@ class Watering(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     plant_id: Mapped[int] = mapped_column(Integer, ForeignKey("plants.id"))
-    timestamp: Mapped[datetime] = mapped_column(
-        DateTime, nullable=False, server_default=func.now()
-    )
+    timestamp: Mapped[datetime] = mapped_column(DateTime,
+                                                nullable=False,
+                                                server_default=func.now())
     fertilizer: Mapped[int] = mapped_column(SmallInteger)
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey("api_users.id"))
 
@@ -59,3 +59,4 @@ class Watering(Base):
         if not isinstance(value, int):
             raise ValueError("User ID must be an integer")
         return value
+

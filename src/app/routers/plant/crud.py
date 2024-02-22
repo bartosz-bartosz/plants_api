@@ -2,11 +2,12 @@ from datetime import datetime, timedelta
 from typing import List
 
 from sqlalchemy import select, func, text, and_, or_
-from sqlalchemy.orm import Session, selectinload
-
+from sqlalchemy.orm import Session
+from sqlalchemy.sql import func
 from app.crud_base import CRUDBase, ModelType
 from app.routers.plant.models import Plant
-from app.routers.plant.schemas import PlantCreate, PlantUpdate
+from app.routers.plant.schemas import PlantCreate, PlantResponse, PlantUpdate
+from app.utils import needs_watering
 
 
 # noinspection PyTypeChecker
@@ -14,14 +15,14 @@ class CRUDPlant(CRUDBase[Plant, PlantCreate, PlantUpdate]):
     def read_unwatered(
         self, db: Session, *, skip: int = 0, limit: int = 10, user_id: int
     ) -> List[Plant]:
-        filters = [self.model.user_id == user_id, 
-                   self.model.next_watering < datetime.now()]
+        filters = [self.model.user_id == user_id]
         plants = super().get_multi(db=db, skip=skip, limit=limit, filters=filters)
-        return plants
+        unwatered = [plant for plant in plants if needs_watering(plant.last_watering, plant.watering_frequency)]
+        return unwatered
 
     def get_multi(
         self, db: Session, *, skip: int = 0, limit: int = 100, **kwargs
-    ) -> List[Plant]:
+    ) -> List[PlantResponse]:
         if kwargs.get("user_id"):
             query = (
                 select(self.model)
@@ -30,22 +31,6 @@ class CRUDPlant(CRUDBase[Plant, PlantCreate, PlantUpdate]):
                 .where(self.model.user_id == kwargs["user_id"])
             )
             result = db.execute(query).scalars().all()
-            for plant in result:
-                plant.next_watering = (
-                    plant.last_watering + timedelta(days=plant.watering_frequency)
-                    if plant.last_watering
-                    else None
-                )
-                plant.days_left = (
-                    (plant.next_watering - datetime.now()).days
-                    if plant.last_watering
-                    else None
-                )
-                print(plant.__dict__)
-            result = sorted(
-                result,
-                key=lambda x: x.days_left if x.days_left is not None else float("inf"),
-            )
             return result
         return super().get_multi(db, skip=skip, limit=limit)
 
