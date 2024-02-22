@@ -1,4 +1,4 @@
-from typing import Any, Dict, Generic, List, Optional, Type, TypeVar, Union
+from typing import Any, Dict, Generic, Iterable, List, Optional, Type, TypeVar, Union
 
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
@@ -34,7 +34,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
                   skip: int = 0,
                   limit: int = 100,
                   filters: list | None = None,
-                  **kwargs) -> List[ModelType]:
+                  **kwargs) -> Iterable[ModelType]:
         query = select(self.model)
         if kwargs.get("user_id"):
             filters = [self.model.user_id == kwargs["user_id"]] # pyright: ignore

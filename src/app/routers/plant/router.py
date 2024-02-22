@@ -11,7 +11,6 @@ from app.routers.auth.schemas import ApiUser
 from app.routers.plant import models as m
 from app.routers.plant.crud import plant_crud
 from app.routers.plant.schemas import (
-    PlantBase,
     PlantCreate,
     PlantUpdate,
     PlantLogCreate,
@@ -24,11 +23,9 @@ plant_router = APIRouter(prefix="/plant", tags=["plant"])
 
 
 @plant_router.post("", status_code=status.HTTP_201_CREATED, response_model=PlantCreate)
-async def create_plant(
-    plant_create: PlantCreate,
-    db: Session = Depends(get_db),
-    user: ApiUser = Depends(get_current_user),
-):
+async def create_plant(plant_create: PlantCreate,
+                       db: Session = Depends(get_db), 
+                       user: ApiUser = Depends(get_current_user)):
     """Creates a new plant in the database"""
     if user.auth_level < 1:
         return HTTPException(status_code=403, detail="Forbidden")
@@ -96,7 +93,7 @@ async def delete_plant(plant_id: int,
     return plant_crud.delete(db=db, obj_id=plant_id)
 
 
-@plant_router.get("",
+@plant_router.get("/list",
                   status_code=status.HTTP_200_OK,
                   response_model=List[PlantResponse]
 )

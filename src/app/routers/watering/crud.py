@@ -1,4 +1,4 @@
-from typing import List
+from typing import Iterable, List
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -13,9 +13,12 @@ from app.routers.watering.schemas import (
 
 # noinspection PyTypeChecker
 class CRUDWatering(CRUDBase[Watering, WateringCreateDB, WateringUpdate]):
-    def get_multi(
-        self, db: Session, *, skip: int = 0, limit: int = 100, **kwargs
-    ) -> List[ModelType]:
+    def get_multi(self,
+                  db: Session,
+                  *,
+                  skip: int = 0,
+                  limit: int = 100,
+                  **kwargs) -> Iterable[Watering]:
         if kwargs.get("plant_id"):
             query = (
                 select(self.model)
