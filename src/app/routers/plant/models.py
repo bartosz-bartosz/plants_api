@@ -20,7 +20,7 @@ class Plant(Base):
     name: Mapped[str] = mapped_column(String, nullable=False)
     acquire_time= mapped_column(DateTime)
     is_alive: Mapped[bool] = mapped_column(Integer)
-    species: Mapped[str] = mapped_column(String, nullable=False)
+    species: Mapped[str] = mapped_column(String)
     watering_frequency: Mapped[int] = mapped_column(Integer)
 
     # relationships

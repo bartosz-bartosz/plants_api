@@ -6,19 +6,19 @@ sys.path.append(".")
 
 from dotenv import load_dotenv
 from fastapi.testclient import TestClient
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import sessionmaker
 
 from app.db import Base, get_db
 from app.main import app
 from app.routers.auth.models import ApiUser
-
+from app.routers.auth.auth import get_password_hash
 
 load_dotenv()
 USERNAME_TEST = os.getenv("API_USERNAME")
 PASSWORD_TEST = os.getenv("API_PASSWORD")
 
-TEST_SQLALCHEMY_DATABASE_URI = "postgresql://testuser:testpass@localhost:5435/test_db"
+TEST_SQLALCHEMY_DATABASE_URI = "postgresql://testuser:testpass@localhost:5432/testdb"
 test_engine = create_engine(TEST_SQLALCHEMY_DATABASE_URI)
 TestSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=test_engine)
 
@@ -28,8 +28,10 @@ def test_session():
     Base.metadata.drop_all(bind=test_engine)
     Base.metadata.create_all(bind=test_engine)
     session = TestSessionLocal()
+    print(PASSWORD_TEST)
+    print(USERNAME_TEST)
     api_user = ApiUser(username=USERNAME_TEST,
-                       password=PASSWORD_TEST, 
+                       hashed_password=get_password_hash(PASSWORD_TEST),
                        auth_level=1)
     session.add(api_user)
     session.commit()

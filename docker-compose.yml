@@ -9,9 +9,9 @@ services:
       - "8002:8002"
   database:
     image: postgres
-    env_file: ./src/.env.dev
+    env_file: ./src/.env.test
     ports:
-      - "5435:5435"
+      - "5432:5432"
     volumes:
       - database:/var/lib/postgresql/data
 

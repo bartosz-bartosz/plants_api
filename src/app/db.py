@@ -14,7 +14,7 @@ engine = create_engine(SQL_DB_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 # Base = declarative_base()
-metadata_obj = MetaData(schema="plants")
+metadata_obj = MetaData(schema="public")
 
 
 class Base(DeclarativeBase):
@@ -27,4 +27,3 @@ def get_db():
         yield db
     finally:
         db.close()
-        
