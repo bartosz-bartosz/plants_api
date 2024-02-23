@@ -30,8 +30,13 @@ def test_create_plant(test_client, test_user):
                                     "watering_frequency": 7},
                                 headers={"Authorization": f"Bearer {token}"})
     assert response.status_code == 201
+    print(response.json())
 
 
 def test_read_plant(test_client, test_user):
+    test_create_plant(test_client, test_user)
     token = test_token(test_client, test_user)
-
+    response = test_client.get("/plant/1",
+                               headers={"Authorization": f"Bearer {token}"})
+    assert response.status_code == 200
+    assert response.json()["name"] == "test_plant"
