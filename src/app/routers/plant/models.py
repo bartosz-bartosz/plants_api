@@ -1,11 +1,12 @@
 from datetime import datetime
 from typing import List, TYPE_CHECKING
 
-from sqlalchemy import Integer, String, ForeignKey, Float, DateTime
+from sqlalchemy import select, Integer, String, ForeignKey, Float, DateTime
 from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy.orm import Mapped, mapped_column, validates, relationship
+from sqlalchemy.orm import Mapped, column_property, mapped_column, validates, relationship
 
 from app.db import Base
+from app.routers.watering.models import Watering
 
 if TYPE_CHECKING:
     from app.routers.watering.models import Watering
@@ -25,12 +26,16 @@ class Plant(Base):
 
     # relationships
     waterings: Mapped[List["Watering"]] = relationship("Watering", back_populates="plant")
+    last_watering = column_property(select(Watering.timestamp) \
+                                    .where(Watering.plant_id == id) \
+                                    .order_by(Watering.timestamp.desc()).limit(1) \
+                                    .scalar_subquery())
 
-    @property
-    def last_watering(self) -> datetime | None:
-        if not self.waterings:
-            return None
-        return sorted([watering_time.timestamp for watering_time in self.waterings], reverse=True)[0]
+    # @property
+    # def last_watering(self) -> datetime | None:
+    #     if not self.waterings:
+    #         return None
+    #     return sorted([watering_time.timestamp for watering_time in self.waterings], reverse=True)[0]
 
     @validates('name')
     def validate_name(self, key, value: str):
