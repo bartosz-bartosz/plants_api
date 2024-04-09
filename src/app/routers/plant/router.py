@@ -55,21 +55,6 @@ async def read_plants_count(db: Session = Depends(get_db),
     return {"count": plant_crud.get_rows_count(db)}
 
 
-@plant_router.get("/{plant_id}",
-                  status_code=status.HTTP_200_OK,
-                  response_model=PlantResponse)
-async def read_plant(plant_id: int,
-                     db: Session = Depends(get_db),
-                     current_api_user: ApiUser = Depends(get_current_user)):
-    """Reads a single plant from the database by ID"""
-    if current_api_user.auth_level < 1:
-        return HTTPException(status_code=403, detail="Forbidden")
-    plant = plant_crud.get(db=db, obj_id=plant_id)
-    if plant is None:
-        raise HTTPException(status_code=404, detail="Plant not found.")
-    return plant
-
-
 @plant_router.put("/{plant_id}", response_model=PlantResponse)
 async def update_plant(plant_id: int,
                        update_data: PlantUpdate,
@@ -104,6 +89,21 @@ async def read_plant_list(skip: int = 0, limit: int = 10,
     if current_api_user.auth_level < 1:
         return HTTPException(status_code=403, detail="Forbidden")
     return plant_crud.get_multi(db=db, skip=skip, limit=limit, user_id=current_api_user.id)
+
+
+@plant_router.get("/{plant_id}",
+                  status_code=status.HTTP_200_OK,
+                  response_model=PlantResponse)
+async def read_plant(plant_id: int,
+                     db: Session = Depends(get_db),
+                     current_api_user: ApiUser = Depends(get_current_user)):
+    """Reads a single plant from the database by ID"""
+    if current_api_user.auth_level < 1:
+        return HTTPException(status_code=403, detail="Forbidden")
+    plant = plant_crud.get(db=db, obj_id=plant_id)
+    if plant is None:
+        raise HTTPException(status_code=404, detail="Plant not found.")
+    return plant
 
 
 #  MISC
