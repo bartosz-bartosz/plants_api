@@ -55,7 +55,7 @@ async def read_plants_count(db: Session = Depends(get_db),
     """Reads the count of all user plants in the database"""
     if current_api_user.auth_level < 1:
         return HTTPException(status_code=403, detail="Forbidden")
-    return {"count": plant_crud.get_rows_count(db)}
+    return {"count": plant_crud.read_count(db=db, user_id=current_api_user.id)}
 
 
 @plant_router.get("/list",

@@ -76,6 +76,6 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         db.commit()
         return obj # pyright: ignore
 
-    def get_rows_count(self, db: Session):
+    def get_rows_count(self, db: Session, ):
         count_query = func.count(self.model.id) # pyright: ignore
         return db.execute(count_query).scalar()
