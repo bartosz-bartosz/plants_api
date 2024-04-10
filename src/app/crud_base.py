@@ -2,7 +2,7 @@ from typing import Any, Dict, Generic, Iterable, List, Optional, Type, TypeVar, 
 
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
-from sqlalchemy import select, func
+from sqlalchemy import select, func, text, desc, asc
 from sqlalchemy.orm import Session
 
 from app.db import Base
@@ -40,8 +40,10 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
             filters = [self.model.user_id == kwargs["user_id"]] # pyright: ignore
         if filters:
             query = query.where(*filters)
-        query = query.offset(skip).limit(limit)
-        return db.execute(query).scalars().all() # pyright: ignore
+        sort_col = getattr(self.model, kwargs["sort_by"])
+        if kwargs["sort_order"] == "asc":
+            query = query.offset(skip).limit(limit).order_by(sort_col.desc())
+        return db.execute(query).scalars().all()
 
     def create(self, db: Session, *, new_obj: CreateSchemaType) -> ModelType:
         obj_in_data = jsonable_encoder(new_obj)

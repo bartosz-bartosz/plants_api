@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import List, TYPE_CHECKING
 
 from sqlalchemy import select, Integer, String, ForeignKey, Float, DateTime
@@ -36,6 +36,18 @@ class Plant(Base):
     #     if not self.waterings:
     #         return None
     #     return sorted([watering_time.timestamp for watering_time in self.waterings], reverse=True)[0]
+
+    @property
+    def next_watering(self) -> datetime | None:
+        if self.last_watering and self.watering_frequency:
+            return self.last_watering + timedelta(days=self.watering_frequency)
+        return None
+
+    @property
+    def days_left(self) -> int | None:
+        if self.next_watering:
+            return (self.next_watering - datetime.now()).days
+        return None
 
     @validates('name')
     def validate_name(self, key, value: str):
