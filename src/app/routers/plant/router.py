@@ -68,7 +68,10 @@ async def read_plant_list(skip: int = 0, limit: int = 10, sort_by: str = "last_w
     """Reads all user plants from the database"""
     if current_api_user.auth_level < 1:
         return HTTPException(status_code=403, detail="Forbidden")
-    return plant_crud.get_multi(db=db, skip=skip, limit=limit, sort_by=sort_by, sort_order=sort_order, user_id=current_api_user.id)
+    response = plant_crud.get_multi(db=db, skip=skip, limit=limit, sort_by=sort_by, sort_order=sort_order, user_id=current_api_user.id)
+    response = sorted(response, key=lambda x: x.next_watering if x.next_watering else datetime.min)
+    return response
+
 
 
 @plant_router.get("/unwatered",

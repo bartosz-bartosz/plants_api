@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Any, Dict, Generic, Iterable, List, Optional, Type, TypeVar, Union
 
 from fastapi.encoders import jsonable_encoder
@@ -40,10 +41,13 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
             filters = [self.model.user_id == kwargs["user_id"]] # pyright: ignore
         if filters:
             query = query.where(*filters)
-        sort_col = getattr(self.model, kwargs["sort_by"])
-        if kwargs["sort_order"] == "asc":
-            query = query.offset(skip).limit(limit).order_by(sort_col.desc())
-        return db.execute(query).scalars().all()
+        query = query.offset(skip).limit(limit)
+        response = db.execute(query).scalars().all()
+        if not kwargs["sort_by"]:
+            return response
+        response = sorted(response, key=lambda x: getattr(x, kwargs["sort_by"]) or datetime.min)
+        return response
+
 
     def create(self, db: Session, *, new_obj: CreateSchemaType) -> ModelType:
         obj_in_data = jsonable_encoder(new_obj)
