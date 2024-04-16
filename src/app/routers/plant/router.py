@@ -36,7 +36,7 @@ async def create_plant(
     if user.auth_level < 1:
         return HTTPException(status_code=403, detail="Forbidden")
     plant_in = PlantCreateDB(**plant_create.model_dump(), user_id=user.id)
-    return plant_crud.create(db=db, new_obj=plant_in)
+    return await plant_crud.create(db=db, new_obj=plant_in)
 
 
 """ ---------------- PUT """
