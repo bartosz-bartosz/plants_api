@@ -45,7 +45,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         response = db.execute(query).scalars().all()
         if not kwargs["sort_by"]:
             return response
-        response = sorted(response, key=lambda x: getattr(x, kwargs["sort_by"]) or datetime.min)
+        #  response = sorted(response, key=lambda x: getattr(x, kwargs["sort_by"]) or datetime.min)
         return response
 
 
