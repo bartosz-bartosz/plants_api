@@ -91,10 +91,6 @@ async def read_plant_list(
         sort_order=sort_order,
         user_id=current_api_user.id,
     )
-    empty_date = datetime.min if sort_order == "asc" else datetime.max
-    response = sorted(
-        response, key=lambda x: x.next_watering if x.next_watering else empty_date
-    )
     return response
 
 
