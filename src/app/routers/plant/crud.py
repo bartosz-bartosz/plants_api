@@ -10,7 +10,7 @@ from app.utils import needs_watering
 
 # noinspection PyTypeChecker
 class CRUDPlant(CRUDBase[Plant, PlantCreate, PlantUpdate]):
-    def read_unwatered(self,
+    async def read_unwatered(self,
                        db: Session,
                        *,
                        skip: int = 0,
@@ -20,7 +20,7 @@ class CRUDPlant(CRUDBase[Plant, PlantCreate, PlantUpdate]):
         unwatered = [plant for plant in plants if needs_watering(plant.last_watering, plant.watering_frequency)]
         return unwatered
 
-    def read_count(self, db: Session, user_id: int) -> int:
+    async def read_count(self, db: Session, user_id: int) -> int:
         query = select(func.count(self.model.id)).where(self.model.user_id == user_id)
         result = db.execute(query).scalar()
         if not result:

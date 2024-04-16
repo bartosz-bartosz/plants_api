@@ -52,7 +52,7 @@ async def update_item(watering_id: int,
     if user.auth_level < 1:
         raise HTTPException(status_code=403, detail="Not enough permissions")
     return watering_crud.update(db=db, 
-                                db_obj=watering_crud.get(db=db, obj_id=watering_id),
+                                db_obj = await watering_crud.get(db=db, obj_id=watering_id),
                                 obj_in=watering_data)
 
 

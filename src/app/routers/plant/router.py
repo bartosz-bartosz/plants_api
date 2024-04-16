@@ -52,8 +52,7 @@ async def update_plant(
     if current_api_user.auth_level < 1:
         return HTTPException(status_code=403, detail="Forbidden")
     plant_obj = plant_crud.get(db, plant_id)
-    plant_crud.update(db=db, db_obj=plant_obj, obj_in=update_data)
-    return plant_crud.get(db=db, obj_id=plant_id)
+    return await plant_crud.update(db=db, db_obj=plant_obj, obj_in=update_data)
 
 
 """ ---------------- GET  """
