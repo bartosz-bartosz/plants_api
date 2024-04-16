@@ -31,6 +31,9 @@ class Plant(Base):
                                     .order_by(Watering.timestamp.desc()).limit(1) \
                                     .scalar_subquery())
 
+    # In progress
+    # next_watering = column_property(select(Watering.times))
+
     @property
     def next_watering(self) -> datetime | None:
         if self.last_watering and self.watering_frequency:
