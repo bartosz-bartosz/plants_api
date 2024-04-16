@@ -66,7 +66,8 @@ async def read_plants_count(
     """Reads the count of all user plants in the database"""
     if current_api_user.auth_level < 1:
         return HTTPException(status_code=403, detail="Forbidden")
-    return {"count": plant_crud.read_count(db=db, user_id=current_api_user.id)}
+    count = await plant_crud.read_count(db=db, user_id=current_api_user.id)
+    return {"count": count}
 
 
 @plant_router.get(
@@ -83,7 +84,7 @@ async def read_plant_list(
     """Reads all user plants from the database"""
     if current_api_user.auth_level < 1:
         return HTTPException(status_code=403, detail="Forbidden")
-    response = plant_crud.get_multi(
+    response = await plant_crud.get_multi(
         db=db,
         skip=skip,
         limit=limit,
@@ -122,7 +123,7 @@ async def read_plant(
     """Reads a single plant from the database by ID"""
     if current_api_user.auth_level < 1:
         return HTTPException(status_code=403, detail="Forbidden")
-    plant = plant_crud.get(db=db, obj_id=plant_id)
+    plant = await plant_crud.get(db=db, obj_id=plant_id)
     if plant is None:
         raise HTTPException(status_code=404, detail="Plant not found.")
     if plant.user_id != current_api_user.id:

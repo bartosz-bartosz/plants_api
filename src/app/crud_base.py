@@ -25,11 +25,11 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         """
         self.model = model
 
-    def get(self, db: Session, obj_id: Any) -> Optional[ModelType]:
+    async def get(self, db: Session, obj_id: Any) -> Optional[ModelType]:
         query = select(self.model).where(self.model.id == obj_id) # type: ignore
         return db.execute(query).scalar_one_or_none()
 
-    def get_multi(self,
+    async def get_multi(self,
                   db: Session,
                   *,
                   skip: int = 0,
@@ -46,7 +46,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         return response
 
 
-    def create(self, db: Session, *, new_obj: CreateSchemaType) -> ModelType:
+    async def create(self, db: Session, *, new_obj: CreateSchemaType) -> ModelType:
         obj_in_data = jsonable_encoder(new_obj)
         db_obj = self.model(**obj_in_data)
         db.add(db_obj)
@@ -79,6 +79,6 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         db.commit()
         return obj # pyright: ignore
 
-    def get_rows_count(self, db: Session, ):
+    async def get_rows_count(self, db: Session, ):
         count_query = func.count(self.model.id) # pyright: ignore
         return db.execute(count_query).scalar()

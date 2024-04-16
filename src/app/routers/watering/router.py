@@ -30,7 +30,7 @@ async def get_item(watering_id: int,
                    user: ApiUser = Depends(get_current_user)):
     if user.auth_level < 1:
         raise HTTPException(status_code=403, detail="Not enough permissions")
-    return watering_crud.get(db=db, obj_id=watering_id)
+    return await watering_crud.get(db=db, obj_id=watering_id)
 
 
 @watering_router.get("", status_code=status.HTTP_200_OK)
@@ -39,7 +39,7 @@ async def get_list(plant_id: int | None = None,
                    user: ApiUser = Depends(get_current_user)):
     if user.auth_level < 1:
         raise HTTPException(status_code=403, detail="Not enough permissions")
-    return watering_crud.get_multi(db=db, plant_id=plant_id)
+    return await watering_crud.get_multi(db=db, plant_id=plant_id)
 
 
 @watering_router.patch("/{watering_id}", 

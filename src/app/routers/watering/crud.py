@@ -13,7 +13,7 @@ from app.routers.watering.schemas import (
 
 # noinspection PyTypeChecker
 class CRUDWatering(CRUDBase[Watering, WateringCreateDB, WateringUpdate]):
-    def get_multi(self,
+    async def get_multi(self,
                   db: Session,
                   *,
                   skip: int = 0,
