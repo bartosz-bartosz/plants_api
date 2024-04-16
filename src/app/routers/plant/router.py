@@ -4,6 +4,7 @@ from typing import List
 from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.orm import Session
 
+import app.routers.plant.models as models
 from app.db import get_db
 from app.routers.auth.auth import get_current_user
 from app.routers.auth.schemas import ApiUser
@@ -52,6 +53,9 @@ async def update_plant(
     if current_api_user.auth_level < 1:
         return HTTPException(status_code=403, detail="Forbidden")
     plant_obj = plant_crud.get(db, plant_id)
+    if not plant_obj:
+        raise HTTPException(404, "Plant not found")
+    assert isinstance(plant_obj, models.Plant)
     return await plant_crud.update(db=db, db_obj=plant_obj, obj_in=update_data)
 
 
