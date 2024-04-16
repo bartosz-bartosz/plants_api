@@ -112,7 +112,7 @@ async def read_unwatered_plants(
     """Reads only these user plants that should have already been watered by now."""
     if user.auth_level < 1:
         return HTTPException(status_code=403, detail="Forbidden")
-    return plant_crud.read_unwatered(db=db, skip=skip, limit=limit, user_id=user.id)
+    return await plant_crud.read_unwatered(db=db, skip=skip, limit=limit, user_id=user.id)
 
 
 @plant_router.get(
