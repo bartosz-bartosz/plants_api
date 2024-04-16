@@ -48,14 +48,3 @@ class Plant(Base):
         if not 2 <= len(value) <= 200:
             raise ValueError("Name length must be between 2 and 200 characters")
         return value
-
-
-class PlantLogs(Base):
-    """Table for storing plant logs from a microcontroller in the future.
-    Needs plant_id foreign key"""
-    __tablename__ = "plant_logs"
-
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
-    timestamp = mapped_column(DateTime)
-    plant_name: Mapped[str] = mapped_column(String, nullable=False)
-    moisture: Mapped[float] = mapped_column(Float, nullable=False)

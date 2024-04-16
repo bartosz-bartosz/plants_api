@@ -146,24 +146,3 @@ async def delete_plant(
     if current_api_user.auth_level < 1:
         return HTTPException(status_code=403, detail="Forbidden")
     return await plant_crud.delete(db=db, obj_id=plant_id)
-
-
-#  MISC
-@plant_router.post("/log")
-async def create_plant_log(
-    form_data: PlantLogCreate,
-    db: Session = Depends(get_db),
-    current_api_user: ApiUser = Depends(get_current_user),
-):
-    """This endpoint is just a placeholder, in the future 'logs' endpoints should have their own directory"""
-    if current_api_user.auth_level >= 1:
-        timestamp = datetime.fromtimestamp(form_data.timestamp)
-        plant_log = m.PlantLogs(
-            timestamp=timestamp,
-            plant_name=form_data.plant_name,
-            moisture=form_data.moisture,
-        )
-        db.add(plant_log)
-        db.commit()
-        db.refresh(plant_log)
-        return plant_log

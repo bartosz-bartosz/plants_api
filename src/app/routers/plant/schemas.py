@@ -86,9 +86,3 @@ class PlantResponse(PlantDB):
 
 class PlantResponseWater(PlantResponse):
     pass
-    # @computed_field
-    # @property
-    # def needs_water(self) -> bool | None:
-    #     if self.next_watering:
-    #         return self.next_watering < datetime.now()
-    #     return None
