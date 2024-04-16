@@ -31,12 +31,6 @@ class Plant(Base):
                                     .order_by(Watering.timestamp.desc()).limit(1) \
                                     .scalar_subquery())
 
-    # @property
-    # def last_watering(self) -> datetime | None:
-    #     if not self.waterings:
-    #         return None
-    #     return sorted([watering_time.timestamp for watering_time in self.waterings], reverse=True)[0]
-
     @property
     def next_watering(self) -> datetime | None:
         if self.last_watering and self.watering_frequency:
