@@ -73,8 +73,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
             return db_obj
 
     async def delete(self, db: Session, *, obj_id: int) -> ModelType:
-        query = select(self.model).where(self.model.id == obj_id) # pyright: ignore
-        obj = db.execute(query).scalar_one_or_none()
+        obj = await self.get(db, obj_id)
         db.delete(obj)
         db.commit()
         return obj # pyright: ignore

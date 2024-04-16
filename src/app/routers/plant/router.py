@@ -145,7 +145,7 @@ async def delete_plant(
     """Deletes a plant from the database by ID"""
     if current_api_user.auth_level < 1:
         return HTTPException(status_code=403, detail="Forbidden")
-    return plant_crud.delete(db=db, obj_id=plant_id)
+    return await plant_crud.delete(db=db, obj_id=plant_id)
 
 
 #  MISC
