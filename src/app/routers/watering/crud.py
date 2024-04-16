@@ -27,7 +27,7 @@ class CRUDWatering(CRUDBase[Watering, WateringCreateDB, WateringUpdate]):
                 .where(self.model.plant_id == kwargs["plant_id"])
             )
             return db.execute(query).scalars().all()
-        return super().get_multi(db, skip=skip, limit=limit)
+        return await super().get_multi(db, skip=skip, limit=limit)
 
 
 watering_crud = CRUDWatering(Watering)

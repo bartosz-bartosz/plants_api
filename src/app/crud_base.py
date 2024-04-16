@@ -54,7 +54,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         db.refresh(db_obj)
         return db_obj
 
-    def update(self,
+    async def update(self,
                db: Session,
                *,
                db_obj: ModelType,
@@ -72,7 +72,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
             db.refresh(db_obj)
             return db_obj
 
-    def delete(self, db: Session, *, obj_id: int) -> ModelType:
+    async def delete(self, db: Session, *, obj_id: int) -> ModelType:
         query = select(self.model).where(self.model.id == obj_id) # pyright: ignore
         obj = db.execute(query).scalar_one_or_none()
         db.delete(obj)
