@@ -42,8 +42,12 @@ class PlantCreateDB(PlantCreate):
     user_id: int
 
 
-class PlantUpdate(PlantCreate):
-    pass
+class PlantUpdate(BaseModel):
+    name: Optional[str] = None
+    acquire_time: Optional[datetime | date] = None
+    is_alive: Optional[int | bool] = None
+    species: Optional[str] = None
+    watering_frequency: Optional[int] = None
 
 
 class PlantLogCreate(BaseModel):

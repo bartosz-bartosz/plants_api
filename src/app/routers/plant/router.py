@@ -52,10 +52,9 @@ async def update_plant(
     """Updates a plant in the database by ID"""
     if current_api_user.auth_level < 1:
         return HTTPException(status_code=403, detail="Forbidden")
-    plant_obj = plant_crud.get(db, plant_id)
+    plant_obj = await plant_crud.get(db, plant_id)
     if not plant_obj:
         raise HTTPException(404, "Plant not found")
-    assert isinstance(plant_obj, models.Plant)
     return await plant_crud.update(db=db, db_obj=plant_obj, obj_in=update_data)
 
 
