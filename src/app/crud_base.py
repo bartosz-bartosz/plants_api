@@ -45,11 +45,10 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
             print("sort_by", kwargs["sort_by"])
             sort_by_column = getattr(self.model, kwargs["sort_by"])
             print("sort_by_column", sort_by_column)
-            query = query.order_by(sort_by_column.desc())
+            query = query.order_by(sort_by_column)
         query = query.offset(skip).limit(limit)
         response = db.execute(query).scalars().all()
         return response
-
 
     async def create(self, db: Session, *, new_obj: CreateSchemaType) -> ModelType:
         obj_in_data = jsonable_encoder(new_obj)
