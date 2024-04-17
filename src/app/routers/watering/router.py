@@ -21,7 +21,7 @@ async def create_watering(watering_create: WateringCreate,
                           db: Session = Depends(get_db),
                           user: ApiUser = Depends(get_current_user)):
     watering_in = WateringCreateDB(**watering_create.model_dump(), user_id=user.id)
-    return watering_crud.create(db=db, new_obj=watering_in)
+    return await watering_crud.create(db=db, new_obj=watering_in)
 
 
 @watering_router.get("/{watering_id}", status_code=status.HTTP_200_OK)
