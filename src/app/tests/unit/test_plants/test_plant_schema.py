@@ -1,7 +1,7 @@
 import pytest
 from pydantic import ValidationError
 
-from app.routers.plant.schemas import PlantCreate
+from app.resources.plant.schemas import PlantCreate
 
 
 valid_plant_create_data = {

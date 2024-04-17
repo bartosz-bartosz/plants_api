@@ -3,8 +3,8 @@ from typing import List
 from sqlalchemy import select, func
 from sqlalchemy.orm import Session
 from app.crud_base import CRUDBase
-from app.routers.plant.models import Plant
-from app.routers.plant.schemas import PlantCreate, PlantResponse, PlantUpdate
+from app.resources.plant.models import Plant
+from app.resources.plant.schemas import PlantCreate, PlantResponse, PlantUpdate
 from app.utils import needs_watering
 
 

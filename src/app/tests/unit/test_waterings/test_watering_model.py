@@ -1,7 +1,7 @@
 import pytest
 
 from datetime import datetime
-from app.routers.watering.models import Watering
+from app.resources.watering.models import Watering
 
 
 valid_watering_data = {

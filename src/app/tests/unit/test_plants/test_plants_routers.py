@@ -1,7 +1,7 @@
 from datetime import datetime
 import pytest
 
-from app.routers.plant.models import Plant
+from app.resources.plant.models import Plant
 
 
 def create_plant(test_sesion):

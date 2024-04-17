@@ -9,10 +9,10 @@ from sqlalchemy.dialects.postgresql import INTERVAL
 from sqlalchemy.sql import func
 
 from app.db import Base
-from app.routers.watering.models import Watering
+from app.resources.watering.models import Watering
 
 if TYPE_CHECKING:
-    from app.routers.watering.models import Watering
+    from app.resources.watering.models import Watering
 
 
 class Plant(Base):

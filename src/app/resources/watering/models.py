@@ -8,7 +8,7 @@ from sqlalchemy.types import Boolean, SmallInteger
 from app.db import Base
 
 if TYPE_CHECKING:
-    from app.routers.plant.models import Plant
+    from app.resources.plant.models import Plant
 
 
 class Watering(Base):

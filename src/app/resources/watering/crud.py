@@ -4,8 +4,8 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.crud_base import CRUDBase, ModelType
-from app.routers.watering.models import Watering
-from app.routers.watering.schemas import (
+from app.resources.watering.models import Watering
+from app.resources.watering.schemas import (
     WateringCreateDB,
     WateringUpdate,
 )

@@ -2,11 +2,11 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.db import get_db
-from app.routers.auth.auth import get_current_user
-from app.routers.auth.schemas import ApiUser
+from app.resources.auth.auth import get_current_user
+from app.resources.auth.schemas import ApiUser
 
-from app.routers.watering.crud import watering_crud
-from app.routers.watering.schemas import (
+from app.resources.watering.crud import watering_crud
+from app.resources.watering.schemas import (
     WateringBase,
     WateringCreate,
     WateringUpdate,

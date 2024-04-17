@@ -1,4 +1,4 @@
-from app.routers.plant.constants import ErrorCode
+from app.resources.plant.constants import ErrorCode
 
 
 class PlantNotFound:

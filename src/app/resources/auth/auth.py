@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 
-from app.routers.auth import models
+from app.resources.auth import models
 from app.db import get_db
 
 from dotenv import load_dotenv

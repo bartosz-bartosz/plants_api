@@ -11,8 +11,8 @@ from sqlalchemy.orm import sessionmaker
 
 from app.db import Base, get_db
 from app.main import app
-from app.routers.auth.models import ApiUser
-from app.routers.auth.auth import get_password_hash
+from app.resources.auth.models import ApiUser
+from app.resources.auth.auth import get_password_hash
 
 load_dotenv()
 USERNAME_TEST = os.getenv("API_USERNAME")

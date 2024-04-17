@@ -6,11 +6,11 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from sqlalchemy.orm import Session
 
-from app.routers.plant.router import plant_router
-from app.routers.watering.router import watering_router
-from app.routers.auth.auth import get_current_user, create_access_token, authenticate_user, get_password_hash
+from app.resources.plant.router import plant_router
+from app.resources.watering.router import watering_router
+from app.resources.auth.auth import get_current_user, create_access_token, authenticate_user, get_password_hash
 from app.db import get_db
-from app.routers.auth import models as m, schemas as sc
+from app.resources.auth import models as m, schemas as sc
 
 app = FastAPI()
 

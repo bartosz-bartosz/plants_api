@@ -4,14 +4,14 @@ from typing import List
 from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.orm import Session
 
-import app.routers.plant.models as models
+import app.resources.plant.models as models
 from app.db import get_db
-from app.routers.auth.auth import get_current_user
-from app.routers.auth.schemas import ApiUser
+from app.resources.auth.auth import get_current_user
+from app.resources.auth.schemas import ApiUser
 
-from app.routers.plant import models as m
-from app.routers.plant.crud import plant_crud
-from app.routers.plant.schemas import (
+from app.resources.plant import models as m
+from app.resources.plant.crud import plant_crud
+from app.resources.plant.schemas import (
     PlantCreate,
     PlantUpdate,
     PlantLogCreate,

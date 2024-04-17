@@ -1,7 +1,7 @@
 import pytest
 
 from datetime import datetime
-from app.routers.plant.models import Plant
+from app.resources.plant.models import Plant
 
 
 valid_plant_data = {
