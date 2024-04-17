@@ -32,4 +32,5 @@ Even though the project is quite simple, it uses a few solutions that are worth 
 + Full containerization of the project, including the database. The project should be possible to run with a single command.
 + Database migrations (Alembic).
 + More interactions between users and resources - like sharing plants or watering schedules between users.
++ ...
 
