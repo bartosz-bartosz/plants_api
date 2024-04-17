@@ -1,8 +1,7 @@
 from datetime import datetime, timedelta
 from typing import List, TYPE_CHECKING
 
-from sqlalchemy import select, Integer, String, ForeignKey, Float, DateTime
-from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy import select, Integer, String, ForeignKey, DateTime
 from sqlalchemy.orm import Mapped, column_property, mapped_column, validates, relationship
 
 from app.db import Base
@@ -31,9 +30,6 @@ class Plant(Base):
                                     .order_by(Watering.timestamp.desc()).limit(1) \
                                     .scalar_subquery())
 
-    # In progress
-    # next_watering = column_property(select(Watering.times))
-
     @property
     def next_watering(self) -> datetime | None:
         if self.last_watering and self.watering_frequency:
@@ -43,7 +39,7 @@ class Plant(Base):
     @property
     def days_left(self) -> int | None:
         if self.next_watering:
-            return (self.next_watering - datetime.now()).days
+            return (self.next_watering - datetime.now()).days + 1
         return None
 
     @validates('name')

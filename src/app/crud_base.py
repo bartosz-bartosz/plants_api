@@ -41,6 +41,11 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
             filters = [self.model.user_id == kwargs["user_id"]] # pyright: ignore
         if filters:
             query = query.where(*filters)
+        if kwargs.get("sort_by"):
+            print("sort_by", kwargs["sort_by"])
+            sort_by_column = getattr(self.model, kwargs["sort_by"])
+            print("sort_by_column", sort_by_column)
+            query = query.order_by(sort_by_column.desc())
         query = query.offset(skip).limit(limit)
         response = db.execute(query).scalars().all()
         return response
